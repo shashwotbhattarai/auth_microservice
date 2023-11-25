@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const authCredentials_model_1 = require("../database/models/authCredentials.model");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const sqs_service_1 = require("./sqs.service");
 class AuthService {
     registerNewUser(newEmail, newUsername, newPassword, newRole) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -28,6 +29,12 @@ class AuthService {
                         role: newRole,
                     });
                     yield registerNewUser.save();
+                    const emailPayload = {
+                        to: newEmail,
+                        subject: "Your Account Has Been Registered",
+                        text: "HI " + newRole + " " + "Thank you for creating new account.",
+                    };
+                    yield new sqs_service_1.SQS_Service().sendMessageToQueue(emailPayload);
                     return {
                         status: 201,
                         message: "New user registered",
