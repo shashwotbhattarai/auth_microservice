@@ -29,7 +29,7 @@ export class SQS_Service {
 		});
 
 		const response = await client.send(command);
-		// console.log(response);
-		return { status: 200, message: response };
+		console.log(response);
+		return { status: 200, message: "message sent to queue" };
 	}
 }

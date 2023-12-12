@@ -14,13 +14,13 @@ export class AuthService {
 					password: newPassword,
 					role: newRole,
 				});
-				await registerNewUser.save();
+				const registerNewUserResult = await registerNewUser.save();
 				const emailPayload: EmailPayload = {
 					to: newEmail,
 					subject: "Your Account Has Been Registered",
 					text: "HI " + newRole + " " + "Thank you for creating new account.",
 				};
-				await new SQS_Service().sendMessageToQueue(emailPayload);
+				const sendMessageToQueueResult = await new SQS_Service().sendMessageToQueue(emailPayload);
 				return {
 					status: 201,
 					message: "New user registered",
