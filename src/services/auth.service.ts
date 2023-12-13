@@ -7,7 +7,7 @@ export class AuthService {
 	async registerNewUser(newEmail: string, newUsername: string, newPassword: string, newRole: string) {
 		try {
 			const result = await AuthCredentials.findOne({ username: newUsername });
-			if (result == null) {
+			if (result === null) {
 				const registerNewUser = new AuthCredentials({
 					email: newEmail,
 					username: newUsername,
@@ -25,7 +25,7 @@ export class AuthService {
 					status: 201,
 					message: "New user registered",
 				};
-			} else {
+			} else if (result instanceof AuthCredentials) {
 				return {
 					status: 400,
 					message: "username already exists",
@@ -59,7 +59,7 @@ export class AuthService {
 					status: 200,
 					message: { token: token },
 				};
-			} else {
+			} else if (result == null || loginPassword != result.password) {
 				return {
 					status: 401,
 					message: "please check your username and password",
