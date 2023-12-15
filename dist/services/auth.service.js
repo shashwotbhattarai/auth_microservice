@@ -21,29 +21,35 @@ class AuthService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield authCredentials_model_1.AuthCredentials.findOne({ username: newUsername });
-                if (result == null) {
+                if (result === null) {
                     const registerNewUser = new authCredentials_model_1.AuthCredentials({
                         email: newEmail,
                         username: newUsername,
                         password: newPassword,
                         role: newRole,
                     });
-                    yield registerNewUser.save();
+                    const registerNewUserResult = yield registerNewUser.save();
                     const emailPayload = {
                         to: newEmail,
                         subject: "Your Account Has Been Registered",
                         text: "HI " + newRole + " " + "Thank you for creating new account.",
                     };
-                    yield new sqs_service_1.SQS_Service().sendMessageToQueue(emailPayload);
+                    const sendMessageToQueueResult = yield new sqs_service_1.SQS_Service().sendMessageToQueue(emailPayload);
                     return {
                         status: 201,
                         message: "New user registered",
                     };
                 }
-                else {
+                else if (result instanceof authCredentials_model_1.AuthCredentials) {
                     return {
                         status: 400,
                         message: "username already exists",
+                    };
+                }
+                else {
+                    return {
+                        status: 500,
+                        message: "internal server error",
                     };
                 }
             }
@@ -69,13 +75,20 @@ class AuthService {
                     });
                     return {
                         status: 200,
-                        message: { token: token },
+                        message: "you are loged in",
+                        token: token,
+                    };
+                }
+                else if (result == null || loginPassword != result.password) {
+                    return {
+                        status: 401,
+                        message: "please check your username and password",
                     };
                 }
                 else {
                     return {
-                        status: 401,
-                        message: "please check your username and password",
+                        status: 500,
+                        message: "internal server error",
                     };
                 }
             }
@@ -89,3 +102,4 @@ class AuthService {
     }
 }
 exports.AuthService = AuthService;
+//# sourceMappingURL=auth.service.js.map

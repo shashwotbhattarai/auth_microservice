@@ -30,6 +30,11 @@ export class AuthService {
 					status: 400,
 					message: "username already exists",
 				};
+			} else {
+				return {
+					status: 500,
+					message: "internal server error",
+				};
 			}
 		} catch (error) {
 			return {
@@ -42,7 +47,7 @@ export class AuthService {
 		try {
 			const result = await AuthCredentials.findOne({ username: loginUsername });
 
-			if (result !== null && loginPassword == result.password) {
+			if (result instanceof AuthCredentials && loginPassword == result.password) {
 				const token = jwt.sign(
 					{
 						user_id: result.user_id,
@@ -57,12 +62,23 @@ export class AuthService {
 
 				return {
 					status: 200,
-					message: { token: token },
+					message: "you are loged in",
+					token: token,
 				};
-			} else if (result == null || loginPassword != result.password) {
+			} else if (result instanceof AuthCredentials && loginPassword != result.password) {
 				return {
 					status: 401,
 					message: "please check your username and password",
+				};
+			} else if (result === null) {
+				return {
+					status: 401,
+					message: "username not found",
+				};
+			} else {
+				return {
+					status: 500,
+					message: "internal server error",
 				};
 			}
 		} catch (error) {

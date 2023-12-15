@@ -17,3 +17,4 @@ app.use("/auth", auth_route_1.default);
 app.listen(port, () => {
     console.log(`Auth Microservice Running at port ${port}`);
 });
+//# sourceMappingURL=index.js.map

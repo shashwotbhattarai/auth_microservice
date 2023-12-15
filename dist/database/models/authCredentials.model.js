@@ -15,3 +15,4 @@ const authCredentialsSchema = new mongoose_1.Schema({
     role: { type: String },
 });
 exports.AuthCredentials = (0, mongoose_1.model)("AuthCredentials", authCredentialsSchema);
+//# sourceMappingURL=authCredentials.model.js.map

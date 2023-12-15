@@ -31,3 +31,4 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.status(authServiceResponse.status).json({ message: authServiceResponse.message });
 }));
 exports.default = router;
+//# sourceMappingURL=auth.route.js.map

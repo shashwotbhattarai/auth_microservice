@@ -11,3 +11,4 @@ exports.validateSignupInput = joi_1.default.object({
     email: joi_1.default.string().email(),
     role: joi_1.default.string().min(9).max(9)
 });
+//# sourceMappingURL=signup.validate.js.map

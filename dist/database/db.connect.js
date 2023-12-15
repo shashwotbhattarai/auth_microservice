@@ -50,3 +50,4 @@ function connectToDatabase() {
     });
 }
 exports.default = connectToDatabase;
+//# sourceMappingURL=db.connect.js.map
