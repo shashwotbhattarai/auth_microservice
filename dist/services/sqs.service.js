@@ -43,7 +43,6 @@ class SQS_Service {
                 MessageDeduplicationId: (0, generate_unique_id_1.default)(),
             });
             const response = yield client.send(command);
-            console.log(response);
             return { status: 200, message: "message sent to queue" };
         });
     }

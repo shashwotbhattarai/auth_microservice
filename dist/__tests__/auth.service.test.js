@@ -102,7 +102,7 @@ describe("AuthService", () => {
             const authService = new auth_service_1.AuthService();
             const finalResult = yield authService.login("ram", "password");
             expect(finalResult === null || finalResult === void 0 ? void 0 : finalResult.status).toBe(401);
-            expect(finalResult === null || finalResult === void 0 ? void 0 : finalResult.message).toBe("please check your username and password");
+            expect(finalResult === null || finalResult === void 0 ? void 0 : finalResult.message).toBe("username not found");
         }));
         test("if database call gets results in an error", () => __awaiter(void 0, void 0, void 0, function* () {
             //mock all dependencies

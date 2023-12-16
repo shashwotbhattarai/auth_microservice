@@ -65,7 +65,7 @@ class AuthService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield authCredentials_model_1.AuthCredentials.findOne({ username: loginUsername });
-                if (result !== null && loginPassword == result.password) {
+                if (result instanceof authCredentials_model_1.AuthCredentials && loginPassword == result.password) {
                     const token = jsonwebtoken_1.default.sign({
                         user_id: result.user_id,
                         username: loginUsername,
@@ -79,10 +79,16 @@ class AuthService {
                         token: token,
                     };
                 }
-                else if (result == null || loginPassword != result.password) {
+                else if (result instanceof authCredentials_model_1.AuthCredentials && loginPassword != result.password) {
                     return {
                         status: 401,
                         message: "please check your username and password",
+                    };
+                }
+                else if (result === null) {
+                    return {
+                        status: 401,
+                        message: "username not found",
                     };
                 }
                 else {
