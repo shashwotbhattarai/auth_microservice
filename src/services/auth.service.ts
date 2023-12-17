@@ -2,6 +2,7 @@ import { AuthCredentials } from "../database/models/authCredentials.model";
 import jwt from "jsonwebtoken";
 import { SQS_Service } from "./sqs.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
+import { createSQSClient } from "./create.SQSClient.service";
 
 export class AuthService {
 	async registerNewUser(newEmail: string, newUsername: string, newPassword: string, newRole: string) {
@@ -20,7 +21,11 @@ export class AuthService {
 					subject: "Your Account Has Been Registered",
 					text: "HI " + newRole + " " + "Thank you for creating new account.",
 				};
-				const sendMessageToQueueResult = await new SQS_Service().sendMessageToQueue(emailPayload);
+				const sqsClient = await createSQSClient();
+				const sendMessageToQueueResult = await new SQS_Service().sendMessageToQueue(
+					emailPayload,
+					sqsClient
+				);
 				return {
 					status: 201,
 					message: "New user registered",
