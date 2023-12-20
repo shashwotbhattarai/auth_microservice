@@ -10,6 +10,6 @@ export function createSQSClient() {
 		},
 		region: process.env.AWS_REGION || "",
 	});
-
+	
 	return client;
 }
