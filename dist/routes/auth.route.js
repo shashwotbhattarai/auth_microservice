@@ -28,7 +28,10 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const authService = new auth_service_1.AuthService();
     const authServiceResponse = yield authService.login(req.body.username, req.body.password);
-    res.status(authServiceResponse.status).json({ message: authServiceResponse.message });
+    res.status(authServiceResponse.status).json({
+        message: authServiceResponse.message,
+        token: authServiceResponse.token,
+    });
 }));
 exports.default = router;
 //# sourceMappingURL=auth.route.js.map
