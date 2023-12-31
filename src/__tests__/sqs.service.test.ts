@@ -33,7 +33,7 @@ describe("Sqs service", () => {
 			subject: "new user created",
 			text: "your user has been created",
 		};
-		const result = await new SQS_Service().sendMessageToQueue(emailPayload, sqsClientMock);
+		const result = await new SQS_Service().sendMessageToQueue(emailPayload);
 
 		expect(result.status).toBe(200);
 	});
@@ -48,7 +48,7 @@ describe("Sqs service", () => {
 			subject: "new user created",
 			text: "your user has been created",
 		};
-		const result = await new SQS_Service().sendMessageToQueue(emailPayload, sqsClientMock);
+		const result = await new SQS_Service().sendMessageToQueue(emailPayload);
 
 		expect(result.status).toBe(500);
 	});

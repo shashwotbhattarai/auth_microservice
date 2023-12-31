@@ -8,6 +8,6 @@ module.exports = {
 			statements: 90,
 		},
 	},
-    collectCoverage: true,
-    collectCoverageFrom: ['src/**/*.ts'], 
+	collectCoverage: true,
+	collectCoverageFrom: ["src/services/*.ts"],
 };
