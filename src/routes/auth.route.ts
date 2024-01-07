@@ -4,31 +4,38 @@ import { validateSignupInput } from "../validators/signup.validate";
 
 const router: Router = express.Router();
 
-router.post("/signup", async (req: Request, res: Response) => {
+router.post("/signup", (req: Request, res: Response) => {
+	console.log("inside signup route");
+	console.log(req.body);
 	const { error } = validateSignupInput.validate(req.body);
 
 	if (error) {
 		return res.status(400).json({ error: error.details[0].message });
 	}
-	const authService = new AuthService();
-	const authServiceResponse = await authService.registerNewUser(
-		req.body.email,
-		req.body.username,
-		req.body.password,
-		req.body.role
-	);
 
-	res.status(authServiceResponse.status).send(authServiceResponse.message);
+	(async function callAuthService() {
+		const authService = new AuthService();
+		const authServiceResponse = await authService.registerNewUser(
+			req.body.email,
+			req.body.username,
+			req.body.password,
+			req.body.role
+		);
+
+		res.status(authServiceResponse.status).send(authServiceResponse.message);
+	})();
 });
 
-router.post("/login", async (req: Request, res: Response) => {
-	const authService = new AuthService();
-	const authServiceResponse = await authService.login(req.body.username, req.body.password);
+router.post("/login", (req: Request, res: Response) => {
+	(async function callAuthService() {
+		const authService = new AuthService();
+		const authServiceResponse = await authService.login(req.body.username, req.body.password);
 
-	res.status(authServiceResponse.status).json({
-		message: authServiceResponse.message,
-		token: authServiceResponse.token,
-	});
+		res.status(authServiceResponse.status).json({
+			message: authServiceResponse.message,
+			token: authServiceResponse.token,
+		});
+	})();
 });
 
 export default router;

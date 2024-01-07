@@ -16,7 +16,6 @@ exports.AuthService = void 0;
 const authCredentials_model_1 = require("../database/models/authCredentials.model");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const sqs_service_1 = require("./sqs.service");
-const create_SQSClient_service_1 = require("./create.SQSClient.service");
 class AuthService {
     registerNewUser(newEmail, newUsername, newPassword, newRole) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,8 +34,7 @@ class AuthService {
                         subject: "Your Account Has Been Registered",
                         text: "HI " + newRole + " " + "Thank you for creating new account.",
                     };
-                    const sqsClient = yield (0, create_SQSClient_service_1.createSQSClient)();
-                    const sendMessageToQueueResult = yield new sqs_service_1.SQS_Service().sendMessageToQueue(emailPayload, sqsClient);
+                    const sendMessageToQueueResult = yield new sqs_service_1.SQS_Service().sendMessageToQueue(emailPayload);
                     return {
                         status: 201,
                         message: "New user registered",

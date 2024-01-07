@@ -8,6 +8,14 @@ module.exports = {
 			statements: 90,
 		},
 	},
+	coverageReporters: ["lcov", "text"],
 	collectCoverage: true,
 	collectCoverageFrom: ["src/services/*.ts"],
+	jest: {
+		transform: {
+			"^.+\\.(ts|tsx)$": "ts-jest",
+			"^.+\\.(js|jsx)$": "babel-jest",
+		},
+		moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+	},
 };

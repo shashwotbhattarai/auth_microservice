@@ -17,6 +17,8 @@ const auth_service_1 = require("../services/auth.service");
 const signup_validate_1 = require("../validators/signup.validate");
 const router = express_1.default.Router();
 router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("inside signup route");
+    console.log(req.body);
     const { error } = signup_validate_1.validateSignupInput.validate(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
@@ -25,7 +27,7 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     const authServiceResponse = yield authService.registerNewUser(req.body.email, req.body.username, req.body.password, req.body.role);
     res.status(authServiceResponse.status).send(authServiceResponse.message);
 }));
-router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const authService = new auth_service_1.AuthService();
     const authServiceResponse = yield authService.login(req.body.username, req.body.password);
     res.status(authServiceResponse.status).json({

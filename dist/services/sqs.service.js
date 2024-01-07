@@ -16,11 +16,14 @@ exports.SQS_Service = void 0;
 const client_sqs_1 = require("@aws-sdk/client-sqs");
 const generate_unique_id_1 = __importDefault(require("generate-unique-id"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const createSQSClient_service_1 = require("./createSQSClient.service");
 dotenv_1.default.config();
 class SQS_Service {
-    sendMessageToQueue(emailPayload, client) {
+    sendMessageToQueue(emailPayload) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const createSQSClientResponse = yield (0, createSQSClient_service_1.createSQSClient)();
+                const client = createSQSClientResponse.data;
                 const sqsQueueUrl = process.env.SQS_QUEUE_URL;
                 const response = yield client.send(new client_sqs_1.SendMessageCommand({
                     QueueUrl: sqsQueueUrl,
