@@ -66,18 +66,11 @@ export class AuthService {
 					message: "you are loged in",
 					token: token,
 				};
-			} else if (result instanceof AuthCredentials && loginPassword != result.password) {
-				return {
-					status: 401,
-					message: "please check your username and password",
-				};
-			} else if (result === null) {
-				return {
-					status: 401,
-					message: "please check your username and password",
-				};
 			} else {
-				throw new Error("database error");
+				return {
+					status: 401,
+					message: "please check your username and password",
+				};
 			}
 		} catch (error) {
 			throw new Error("database error");
