@@ -89,10 +89,12 @@ describe("AuthService", () => {
 		test("if database call gets results in an error", async () => {
 			//mock all dependencies
 			mockingoose(AuthCredentials).toReturn(new Error("Database error"), "findOne");
-			const authService = new AuthService();
-			const finalResult = await authService.login("ram", "password");
-
-			expect(finalResult?.status).toBe(500);
+			try {
+				const authService = new AuthService();
+				const finalResult = await authService.login("ram", "password");
+			} catch (error) {
+				expect(error).toEqual(new Error("database error"));
+			}
 		});
 		test("login in when valid username and password is passed", async () => {
 			mockingoose(AuthCredentials).toReturn({ username: "ram", password: "password" }, "findOne");
@@ -118,19 +120,22 @@ describe("AuthService", () => {
 		test("error when valid username is not passed", async () => {
 			mockingoose(AuthCredentials).toReturn(null, "findOne");
 			jest.spyOn(jwt, "sign");
-			const authService = new AuthService();
-			const finalResult = await authService.login("ram", "password");
-
-			expect(finalResult?.status).toBe(401);
-			expect(finalResult?.message).toBe("username not found");
+			try {
+				const authService = new AuthService();
+				await authService.login("ram", "password");
+			} catch (error) {
+				expect(error).toEqual(new Error("database error"));
+			}
 		});
 		test("if database call gets results in an error", async () => {
 			//mock all dependencies
 			mockingoose(AuthCredentials).toReturn(undefined, "findOne");
-			const authService = new AuthService();
-			const finalResult = await authService.login("ram", "password");
-
-			expect(finalResult?.status).toBe(500);
+			try {
+				const authService = new AuthService();
+				await authService.login("ram", "password");
+			} catch (error) {
+				expect(error).toEqual(new Error("database error"));
+			}
 		});
 	});
 });

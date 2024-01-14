@@ -74,19 +74,13 @@ export class AuthService {
 			} else if (result === null) {
 				return {
 					status: 401,
-					message: "username not found",
+					message: "please check your username and password",
 				};
 			} else {
-				return {
-					status: 500,
-					message: "internal server error",
-				};
+				throw new Error("database error");
 			}
 		} catch (error) {
-			return {
-				status: 500,
-				message: error,
-			};
+			throw new Error("database error");
 		}
 	}
 }

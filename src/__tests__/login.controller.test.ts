@@ -47,4 +47,18 @@ describe("login function", () => {
 			token: "testToken",
 		});
 	});
+
+	it("should handle internal server error", async () => {
+		(authServiceModule.AuthService as jest.Mock).mockImplementation(() => {
+			return {
+				login: jest.fn().mockRejectedValue(new Error("Internal server error")),
+			};
+		});
+		await loginController(mockRequest as unknown as Request, mockResponse as unknown as Response);
+
+		expect(mockResponse.status).toHaveBeenCalledWith(500);
+		expect(jsonResponse).toEqual({
+			error: "internal server error",
+		});
+	});
 });
