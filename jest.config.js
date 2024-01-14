@@ -10,7 +10,7 @@ module.exports = {
 	},
 	coverageReporters: ["lcov", "text"],
 	collectCoverage: true,
-	collectCoverageFrom: ["src/services/*.ts"],
+	collectCoverageFrom: ["src/services/*.ts", "src/controllers/*.ts"],
 	jest: {
 		transform: {
 			"^.+\\.(ts|tsx)$": "ts-jest",
