@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
 import { validateSignupInput } from "../validators/signup.validate";
 
-export const signup = (req: Request, res: Response) => {
+export const signupController = (req: Request, res: Response) => {
 	const { error } = validateSignupInput.validate(req.body);
 
 	if (error) {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
 
-export const login=(req: Request, res: Response) => {
+export const loginController = (req: Request, res: Response) => {
 	(async function callAuthService() {
 		const authService = new AuthService();
 		const authServiceResponse = await authService.login(req.body.username, req.body.password);
@@ -11,4 +11,4 @@ export const login=(req: Request, res: Response) => {
 			token: authServiceResponse.token,
 		});
 	})();
-}
+};
