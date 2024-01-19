@@ -91,7 +91,7 @@ describe("AuthService", () => {
 			mockingoose(AuthCredentials).toReturn(new Error("Database error"), "findOne");
 			try {
 				const authService = new AuthService();
-				const finalResult = await authService.login("ram", "password");
+				await authService.login("ram", "password");
 			} catch (error) {
 				expect(error).toEqual(new Error("database error"));
 			}
