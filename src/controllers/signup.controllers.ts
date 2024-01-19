@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
 import { validateSignupInput } from "../validators/signup.validate";
-import logger from "../configs/logger";
+import logger from "../configs/logger.config";
 
 export const signupController = (req: Request, res: Response) => {
 	const { error } = validateSignupInput.validate(req.body);

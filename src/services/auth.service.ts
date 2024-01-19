@@ -2,7 +2,7 @@ import { AuthCredentials } from "../models/authCredentials.model";
 import jwt from "jsonwebtoken";
 import { SQSService } from "./sqs.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
-import logger from "../configs/logger";
+import logger from "../configs/logger.config";
 
 export class AuthService {
 	async registerNewUser(newEmail: string, newUsername: string, newPassword: string, newRole: string) {
