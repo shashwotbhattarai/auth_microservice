@@ -1,10 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import authRoute from "./routes/auth.route";
-import connectToDatabase from "./database/db.connect";
+import connectToDatabase from "./configs/db.connect";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerFile from "../swagger-output.json";
+import logger from "./configs/logger";
 
 const app = express();
 app.disable("x-powered-by");
@@ -21,5 +22,6 @@ connectToDatabase();
 app.use("/auth", authRoute);
 
 app.listen(port, () => {
-	console.log(`Auth Microservice Running at port ${port}\nAPI documentation: http://localhost:3000/doc`);
+	logger.info(`Auth Microservice Running at port ${port}`);
+	logger.info(`API documentation: http://localhost:3000/doc`);
 });

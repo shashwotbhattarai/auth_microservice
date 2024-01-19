@@ -1,5 +1,5 @@
 import { AuthService } from "../services/auth.service";
-import { AuthCredentials } from "../database/models/authCredentials.model";
+import { AuthCredentials } from "../models/authCredentials.model";
 import { SQSService } from "../services/sqs.service";
 const mockingoose = require("mockingoose");
 import jwt from "jsonwebtoken";
@@ -93,7 +93,7 @@ describe("AuthService", () => {
 				const authService = new AuthService();
 				await authService.login("ram", "password");
 			} catch (error) {
-				expect(error).toEqual(new Error("database error"));
+				expect(error).toEqual(new Error("Unknown error in login"));
 			}
 		});
 		test("login in when valid username and password is passed", async () => {
@@ -114,7 +114,7 @@ describe("AuthService", () => {
 			const finalResult = await authService.login("ram", "password1");
 
 			expect(finalResult?.status).toBe(401);
-			expect(finalResult?.message).toBe("please check your username and password");
+			expect(finalResult?.message).toBe("Please check your username and password");
 		});
 
 		test("error when valid username is not passed", async () => {

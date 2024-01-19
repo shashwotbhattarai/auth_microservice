@@ -1,7 +1,8 @@
-import { AuthCredentials } from "../database/models/authCredentials.model";
+import { AuthCredentials } from "../models/authCredentials.model";
 import jwt from "jsonwebtoken";
 import { SQSService } from "./sqs.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
+import logger from "../configs/logger";
 
 export class AuthService {
 	async registerNewUser(newEmail: string, newUsername: string, newPassword: string, newRole: string) {
@@ -22,25 +23,26 @@ export class AuthService {
 				};
 
 				await new SQSService().sendMessageToQueue(emailPayload);
+				logger.info("New user registered");
 				return {
 					status: 201,
 					message: "New user registered",
 				};
 			} else if (result instanceof AuthCredentials) {
+				logger.info("username already exists");
 				return {
 					status: 400,
 					message: "username already exists",
 				};
 			} else {
-				return {
-					status: 500,
-					message: "internal server error",
-				};
+				logger.info("unknown error in registerNewUser");
+				throw new Error("unknown error in registerNewUser");
 			}
 		} catch (error) {
+			logger.error("error in registerNewUser", error);
 			return {
 				status: 500,
-				message: error,
+				message: "internal server error",
 			};
 		}
 	}
@@ -60,20 +62,22 @@ export class AuthService {
 						expiresIn: "1d",
 					}
 				);
-
+				logger.info("User just logged in");
 				return {
 					status: 200,
-					message: "you are loged in",
+					message: "You are loged in",
 					token: token,
 				};
 			} else {
+				logger.info("Invalid username or password");
 				return {
 					status: 401,
-					message: "please check your username and password",
+					message: "Please check your username and password",
 				};
 			}
 		} catch (error) {
-			throw new Error("database error");
+			logger.error("Error in login", error);
+			throw new Error("Unknown error in login");
 		}
 	}
 }
