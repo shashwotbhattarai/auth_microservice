@@ -8,7 +8,8 @@
 		"test": "jest --coverage",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
-		"swagger": "node ./swagger.js"
+		"swagger": "node ./swagger.js",
+		"build": "tsc"
 	},
 	"keywords": [],
 	"author": "",
