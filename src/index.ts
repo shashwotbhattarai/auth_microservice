@@ -13,7 +13,7 @@ const corsOptions = {
 	origin: "http://localhost:3000/",
 };
 app.use(cors(corsOptions));
-const port = 3000;
+const port = 3001;
 
 app.use(bodyParser.json());
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -23,5 +23,5 @@ app.use("/auth", authRoute);
 
 app.listen(port, () => {
 	logger.info(`Auth Microservice Running at port ${port}`);
-	logger.info(`API documentation: http://localhost:3000/doc`);
+	logger.info(`API documentation: http://localhost:3001/doc`);
 });
