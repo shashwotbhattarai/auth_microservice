@@ -28,7 +28,7 @@ describe("health controller", () => {
 
 		expect(mockResponse.status).toHaveBeenCalledWith(200);
 		expect(jsonResponse).toEqual({
-			message: "Health of auth microservice is good",
+			message: "Auth microservice is alive",
 		});
 	});
 });
