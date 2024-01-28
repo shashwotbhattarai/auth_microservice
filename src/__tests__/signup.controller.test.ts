@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as authServiceModule from "../services/auth.service";
-import { signupController } from "../controllers/signup.controllers";
+import { signupController } from "../controllers/signup.controller";
 
 jest.mock("../services/auth.service");
 
@@ -37,7 +37,10 @@ describe("signup function", () => {
 	});
 
 	it("should return a success response when signup is successful", async () => {
-		await signupController(mockRequest as unknown as Request, mockResponse as unknown as Response);
+		await signupController(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response
+		);
 
 		expect(mockResponse.status).toHaveBeenCalledWith(201);
 		expect(jsonResponse).toEqual("User successfully registered");
@@ -52,7 +55,10 @@ describe("signup function", () => {
 				role: "validRole",
 			},
 		};
-		await signupController(mockRequest as unknown as Request, mockResponse as unknown as Response);
+		await signupController(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response
+		);
 
 		expect(mockResponse.status).toHaveBeenCalledWith(400);
 	});

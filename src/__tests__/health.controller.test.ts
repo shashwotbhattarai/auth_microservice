@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { healthController } from "../controllers/health.controllers";
+import { healthController } from "../controllers/health.controller";
 
 describe("health controller", () => {
 	let mockRequest: any;

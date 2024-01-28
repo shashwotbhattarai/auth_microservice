@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as authServiceModule from "../services/auth.service";
-import { loginController } from "../controllers/login.controllers";
+import { loginController } from "../controllers/login.controller";
 
 jest.mock("../services/auth.service");
 
@@ -39,7 +39,10 @@ describe("login function", () => {
 	});
 
 	it("should return a success response when login is successful", async () => {
-		await loginController(mockRequest as unknown as Request, mockResponse as unknown as Response);
+		await loginController(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response
+		);
 
 		expect(mockResponse.status).toHaveBeenCalledWith(200);
 		expect(jsonResponse).toEqual({
@@ -54,7 +57,10 @@ describe("login function", () => {
 				login: jest.fn().mockRejectedValue(new Error("Internal server error")),
 			};
 		});
-		await loginController(mockRequest as unknown as Request, mockResponse as unknown as Response);
+		await loginController(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response
+		);
 
 		expect(mockResponse.status).toHaveBeenCalledWith(500);
 		expect(jsonResponse).toEqual({
