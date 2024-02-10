@@ -1,7 +1,8 @@
-import { AuthCredentials } from "../database/models/authCredentials.model";
+import { AuthCredentials } from "../models/authCredentials.model";
 import jwt from "jsonwebtoken";
-import { SQS_Service } from "./sqs.service";
+import { SQSService } from "./sqs.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
+import logger from "../configs/logger.config";
 
 export class AuthService {
 	async registerNewUser(newEmail: string, newUsername: string, newPassword: string, newRole: string) {
@@ -14,32 +15,34 @@ export class AuthService {
 					password: newPassword,
 					role: newRole,
 				});
-				const registerNewUserResult = await registerNewUser.save();
+				await registerNewUser.save();
 				const emailPayload: EmailPayload = {
 					to: newEmail,
 					subject: "Your Account Has Been Registered",
 					text: "HI " + newRole + " " + "Thank you for creating new account.",
 				};
-				const sendMessageToQueueResult = await new SQS_Service().sendMessageToQueue(emailPayload);
+
+				await new SQSService().sendMessageToQueue(emailPayload);
+				logger.info("New user registered");
 				return {
 					status: 201,
 					message: "New user registered",
 				};
 			} else if (result instanceof AuthCredentials) {
+				logger.info("username already exists");
 				return {
 					status: 400,
 					message: "username already exists",
 				};
 			} else {
-				return {
-					status: 500,
-					message: "internal server error",
-				};
+				logger.info("unknown error in registerNewUser");
+				throw new Error("unknown error in registerNewUser");
 			}
 		} catch (error) {
+			logger.error("error in registerNewUser", error);
 			return {
 				status: 500,
-				message: error,
+				message: "internal server error",
 			};
 		}
 	}
@@ -59,33 +62,22 @@ export class AuthService {
 						expiresIn: "1d",
 					}
 				);
-
+				logger.info("User just logged in");
 				return {
 					status: 200,
-					message: "you are loged in",
+					message: "You are loged in",
 					token: token,
 				};
-			} else if (result instanceof AuthCredentials && loginPassword != result.password) {
-				return {
-					status: 401,
-					message: "please check your username and password",
-				};
-			} else if (result === null) {
-				return {
-					status: 401,
-					message: "username not found",
-				};
 			} else {
+				logger.info("Invalid username or password");
 				return {
-					status: 500,
-					message: "internal server error",
+					status: 401,
+					message: "Please check your username and password",
 				};
 			}
 		} catch (error) {
-			return {
-				status: 500,
-				message: error,
-			};
+			logger.error("Error in login", error);
+			throw new Error("Unknown error in login");
 		}
 	}
 }

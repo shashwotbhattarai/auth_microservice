@@ -1,34 +1,14 @@
-import express, { Router, Request, Response } from "express";
-import { AuthService } from "../services/auth.service";
-import { validateSignupInput } from "../validators/signup.validate";
+import express, { Router } from "express";
+import { signupController } from "../controllers/signup.controller";
+import { loginController } from "../controllers/login.controller";
+import { healthController } from "../controllers/health.controller";
 
 const router: Router = express.Router();
 
-router.post("/signup", async (req: Request, res: Response)=> {
-  const { error} = validateSignupInput.validate(req.body);
+router.post("/signup", signupController);
 
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-  const authService = new AuthService();
-  const authServiceResponse = await authService.registerNewUser(
-    req.body.email,
-    req.body.username,
-    req.body.password,
-    req.body.role,
-);
+router.post("/login", loginController);
 
-  res.status(authServiceResponse.status).send(authServiceResponse.message);
-});
-
-router.post("/login", async (req: Request, res: Response) => {
-  const authService = new AuthService();
-  const authServiceResponse = await authService.login(
-    req.body.username,
-    req.body.password
-  );
-
-  res.status(authServiceResponse.status).json({message:authServiceResponse.message});
-});
+router.get("/health", healthController);
 
 export default router;

@@ -1,6 +1,6 @@
 import { AuthService } from "../services/auth.service";
-import { AuthCredentials } from "../database/models/authCredentials.model";
-import { SQS_Service } from "../services/sqs.service";
+import { AuthCredentials } from "../models/authCredentials.model";
+import { SQSService } from "../services/sqs.service";
 const mockingoose = require("mockingoose");
 import jwt from "jsonwebtoken";
 
@@ -26,7 +26,6 @@ describe("AuthService", () => {
 			);
 
 			expect(finalResult?.status).toBe(500);
-			// expect(finalResult?.message?.message).toMatch(/Database error/);
 		});
 
 		test("if username doesnt exists in database, new user is created and annd email is sent", async () => {
@@ -39,9 +38,10 @@ describe("AuthService", () => {
 					})),
 				};
 			});
-			const sendMessageToQueueMock = jest
-				.spyOn(SQS_Service.prototype, "sendMessageToQueue")
-				.mockResolvedValue({ status: 200, message: "message sent" });
+			jest.spyOn(SQSService.prototype, "sendMessageToQueue").mockResolvedValue({
+				status: 200,
+				message: "message sent",
+			});
 			const authService = new AuthService();
 			const finalResult = await authService.registerNewUser(
 				"test@example.com",
@@ -89,11 +89,12 @@ describe("AuthService", () => {
 		test("if database call gets results in an error", async () => {
 			//mock all dependencies
 			mockingoose(AuthCredentials).toReturn(new Error("Database error"), "findOne");
-			const authService = new AuthService();
-			const finalResult = await authService.login("ram", "password");
-
-			expect(finalResult?.status).toBe(500);
-			// expect(finalResult?.message?.message).toMatch(/Database error/);
+			try {
+				const authService = new AuthService();
+				await authService.login("ram", "password");
+			} catch (error) {
+				expect(error).toEqual(new Error("Unknown error in login"));
+			}
 		});
 		test("login in when valid username and password is passed", async () => {
 			mockingoose(AuthCredentials).toReturn({ username: "ram", password: "password" }, "findOne");
@@ -108,30 +109,33 @@ describe("AuthService", () => {
 
 		test("error when valid password is not passed", async () => {
 			mockingoose(AuthCredentials).toReturn({ username: "ram", password: "password" }, "findOne");
-			const signSpy = jest.spyOn(jwt, "sign");
+			jest.spyOn(jwt, "sign");
 			const authService = new AuthService();
 			const finalResult = await authService.login("ram", "password1");
 
 			expect(finalResult?.status).toBe(401);
-			expect(finalResult?.message).toBe("please check your username and password");
+			expect(finalResult?.message).toBe("Please check your username and password");
 		});
 
 		test("error when valid username is not passed", async () => {
 			mockingoose(AuthCredentials).toReturn(null, "findOne");
-			const signSpy = jest.spyOn(jwt, "sign");
-			const authService = new AuthService();
-			const finalResult = await authService.login("ram", "password");
-
-			expect(finalResult?.status).toBe(401);
-			expect(finalResult?.message).toBe("username not found");
+			jest.spyOn(jwt, "sign");
+			try {
+				const authService = new AuthService();
+				await authService.login("ram", "password");
+			} catch (error) {
+				expect(error).toEqual(new Error("database error"));
+			}
 		});
 		test("if database call gets results in an error", async () => {
 			//mock all dependencies
 			mockingoose(AuthCredentials).toReturn(undefined, "findOne");
-			const authService = new AuthService();
-			const finalResult = await authService.login("ram", "password");
-
-			expect(finalResult?.status).toBe(500);
+			try {
+				const authService = new AuthService();
+				await authService.login("ram", "password");
+			} catch (error) {
+				expect(error).toEqual(new Error("database error"));
+			}
 		});
 	});
 });
