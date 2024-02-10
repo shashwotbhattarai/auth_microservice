@@ -23,5 +23,5 @@ app.use("/auth", authRoute);
 
 app.listen(port, () => {
 	logger.info(`Auth Microservice Running at port ${port}`);
-	logger.info(`API documentation: http://localhost:3001/doc`);
+	logger.info(`API documentation: http://localhost:${port}/doc`);
 });
