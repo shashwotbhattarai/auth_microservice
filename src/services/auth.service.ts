@@ -3,17 +3,23 @@ import jwt from "jsonwebtoken";
 import { SQSService } from "./sqs.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
 import logger from "../configs/logger.config";
-
+import bcrypt from "bcrypt";
 export class AuthService {
-	async registerNewUser(newEmail: string, newUsername: string, newPassword: string, newRole: string) {
+	async registerNewUser(
+		newEmail: string,
+		newUsername: string,
+		newPassword: string,
+		newRole: string
+	) {
 		try {
 			const result = await AuthCredentials.findOne({ username: newUsername });
 			if (result === null) {
+				const hashedPassword = await bcrypt.hash(newPassword, 10);
 				const registerNewUser = new AuthCredentials({
 					email: newEmail,
 					username: newUsername,
-					password: newPassword,
-					role: newRole,
+					password: hashedPassword,
+					role: newRole
 				});
 				await registerNewUser.save();
 				const emailPayload: EmailPayload = {
@@ -49,8 +55,10 @@ export class AuthService {
 	async login(loginUsername: string, loginPassword: string) {
 		try {
 			const result = await AuthCredentials.findOne({ username: loginUsername });
-
-			if (result instanceof AuthCredentials && loginPassword == result.password) {
+			if (
+				result instanceof AuthCredentials &&
+				(await bcrypt.compare(loginPassword, result.password))
+			) {
 				const token = jwt.sign(
 					{
 						user_id: result.user_id,

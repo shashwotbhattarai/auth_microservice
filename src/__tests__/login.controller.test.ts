@@ -11,7 +11,7 @@ describe("login function", () => {
 
 	beforeEach(() => {
 		mockRequest = {
-			body: {
+			headers: {
 				username: "testuser",
 				password: "testpassword",
 			},

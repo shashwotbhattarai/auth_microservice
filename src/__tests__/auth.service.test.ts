@@ -97,7 +97,7 @@ describe("AuthService", () => {
 			}
 		});
 		test("login in when valid username and password is passed", async () => {
-			mockingoose(AuthCredentials).toReturn({ username: "ram", password: "password" }, "findOne");
+			mockingoose(AuthCredentials).toReturn({ username: "ram", password: "$2b$10$yz1qJF8UH6two7Zm8S5EKOTOWGw6jJ9t5Zxsaaki6kKKQVwTrhW9u" }, "findOne");
 			const signSpy = jest.spyOn(jwt, "sign");
 			signSpy.mockImplementation(() => "mocked-token");
 			const authService = new AuthService();
@@ -108,7 +108,7 @@ describe("AuthService", () => {
 		});
 
 		test("error when valid password is not passed", async () => {
-			mockingoose(AuthCredentials).toReturn({ username: "ram", password: "password" }, "findOne");
+			mockingoose(AuthCredentials).toReturn({ username: "ram", password: "$2b$10$yz1qJF8UH6two7Zm8S5EKOTOWGw6jJ9t5Zxsaaki6kKKQVwTrhW9u" }, "findOne");
 			jest.spyOn(jwt, "sign");
 			const authService = new AuthService();
 			const finalResult = await authService.login("ram", "password1");

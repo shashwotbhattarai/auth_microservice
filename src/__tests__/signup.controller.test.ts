@@ -13,9 +13,11 @@ describe("signup function", () => {
 		mockRequest = {
 			body: {
 				email: "validemail@example.com",
-				username: "validUsername",
-				password: "validPassword",
 				role: "validRole",
+			},
+			headers: {
+				username: "ram",
+				password: "password",
 			},
 		};
 
@@ -50,9 +52,11 @@ describe("signup function", () => {
 		mockRequest = {
 			body: {
 				email: "validemailexample.com",
-				username: "validUsername",
-				password: "validPassword",
 				role: "validRole",
+			},
+			headers: {
+				username: "ram",
+				password: "password",
 			},
 		};
 		await signupController(
