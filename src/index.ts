@@ -13,7 +13,7 @@ const corsOptions = {
 	origin: "http://localhost:3000",
 };
 app.use(cors(corsOptions));
-const port = 3001;
+const port = process.env.PORT
 
 app.use(bodyParser.json());
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
