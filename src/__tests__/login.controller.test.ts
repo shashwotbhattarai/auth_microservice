@@ -11,7 +11,7 @@ describe("login function", () => {
 
 	beforeEach(() => {
 		mockRequest = {
-			body: {
+			headers: {
 				username: "testuser",
 				password: "testpassword",
 			},
@@ -48,6 +48,22 @@ describe("login function", () => {
 		expect(jsonResponse).toEqual({
 			message: "Login successful",
 			token: "testToken",
+		});
+	});
+
+	it("should return 400 error if username and password is not present in headers", async () => {
+		const mockRequest = {
+			headers: {
+			},
+		};
+		await loginController(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response
+		);
+
+		expect(mockResponse.status).toHaveBeenCalledWith(400);
+		expect(jsonResponse).toEqual({
+			error: "Didnt receive username and password in headers" 
 		});
 	});
 
