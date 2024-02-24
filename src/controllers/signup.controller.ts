@@ -7,6 +7,7 @@ export const signupController = (req: Request, res: Response) => {
 	
 	const username:string = req.headers.username as string;
 	const password:string = req.headers.password as string;
+
 	const { error } = validateSignupInput.validate({username,password,...req.body});
 	
 	if (error) {

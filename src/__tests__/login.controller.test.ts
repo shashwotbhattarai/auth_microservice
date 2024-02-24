@@ -51,6 +51,22 @@ describe("login function", () => {
 		});
 	});
 
+	it("should return 400 error if username and password is not present in headers", async () => {
+		const mockRequest = {
+			headers: {
+			},
+		};
+		await loginController(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response
+		);
+
+		expect(mockResponse.status).toHaveBeenCalledWith(400);
+		expect(jsonResponse).toEqual({
+			error: "Didnt receive username and password in headers" 
+		});
+	});
+
 	it("should handle internal server error", async () => {
 		(authServiceModule.AuthService as jest.Mock).mockImplementation(() => {
 			return {

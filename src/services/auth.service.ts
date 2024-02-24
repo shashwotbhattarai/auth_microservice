@@ -10,7 +10,9 @@ export class AuthService {
 		newUsername: string,
 		newPassword: string,
 		newRole: string
+
 	) {
+		console.log(newPassword)
 		try {
 			const result = await AuthCredentials.findOne({ username: newUsername });
 			if (result === null) {
@@ -55,6 +57,11 @@ export class AuthService {
 	async login(loginUsername: string, loginPassword: string) {
 		try {
 			const result = await AuthCredentials.findOne({ username: loginUsername });
+			if (result){
+				console.log("result",result);
+				console.log(await bcrypt.compare(loginPassword, result.password));
+			}
+	
 			if (
 				result instanceof AuthCredentials &&
 				(await bcrypt.compare(loginPassword, result.password))
