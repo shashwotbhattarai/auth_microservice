@@ -1,6 +1,7 @@
 import { AuthService } from "../services/auth.service";
 import { AuthCredentials } from "../models/authCredentials.model";
 import { SQSService } from "../services/sqs.service";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const mockingoose = require("mockingoose");
 import jwt from "jsonwebtoken";
 

@@ -5,9 +5,10 @@ import { signupController } from "../controllers/signup.controller";
 jest.mock("../services/auth.service");
 
 describe("signup function", () => {
-	let mockRequest: any;
+	let mockRequest: unknown;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let mockResponse: any;
-	let jsonResponse: any;
+	let jsonResponse: unknown;
 
 	beforeEach(() => {
 		mockRequest = {
