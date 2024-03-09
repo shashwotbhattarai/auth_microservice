@@ -4,6 +4,7 @@ import { SQSService } from "./sqs.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
 import logger from "../configs/logger.config";
 import bcrypt from "bcrypt";
+import { AccountRegisteredEmailTemplate } from "../constants/email.templates";
 export class AuthService {
   async registerNewUser(
     newEmail: string,
@@ -25,8 +26,8 @@ export class AuthService {
         await registerNewUser.save();
         const emailPayload: EmailPayload = {
           to: newEmail,
-          subject: "Your Account Has Been Registered",
-          text: "HI " + newRole + " " + "Thank you for creating new account.",
+          subject: AccountRegisteredEmailTemplate.subject,
+          text: AccountRegisteredEmailTemplate.text,
         };
 
         await new SQSService().sendMessageToQueue(emailPayload);
