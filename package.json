@@ -11,7 +11,9 @@
     "swagger": "node ./swagger.js",
     "build": "tsc",
     "prettier": "npx prettier . --write",
-    "prepare": "husky"
+    "prepare": "husky",
+    "check-for-unused-dependencies": "npx depcheck",
+    "check-for-package-updates": "npm-check"
   },
   "keywords": [],
   "author": "",
