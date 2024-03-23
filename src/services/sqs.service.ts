@@ -1,6 +1,6 @@
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
 import generateUniqueId from "generate-unique-id";
-import { createSQSClient } from "./createSQSClient.service";
+import CreateSQSClientService from "./createSQSClient.service";
 import { EmailPayload } from "../models/emailPayload.interface";
 import logger from "../configs/logger.config";
 import { envVars } from "../configs/envVars.config";
@@ -8,7 +8,8 @@ import { envVars } from "../configs/envVars.config";
 export class SQSService {
   async sendMessageToQueue(emailPayload: EmailPayload) {
     try {
-      const createSQSClientResponse = await createSQSClient();
+      const createSQSClientResponse =
+        await new CreateSQSClientService().createSQSClient();
       const client = createSQSClientResponse.data;
       const sqsQueueUrl = envVars.SQS_QUEUE_URL;
 

@@ -1,5 +1,5 @@
 // Import the function to test
-import { createSQSClient } from "../services/createSQSClient.service";
+import CreateSQSClientService from "../services/createSQSClient.service";
 
 // Mocking the logger and envVars dependencies
 jest.mock("../configs/logger.config", () => ({
@@ -25,7 +25,7 @@ describe("createSQSClient", () => {
       AWS_REGION: "fakeRegion",
     };
 
-    const response = await createSQSClient();
+    const response = await new CreateSQSClientService().createSQSClient();
     expect(response.status).toBe(200);
     expect(response.message).toBe("SQSClient created");
     expect(response.data).toBeDefined();
@@ -40,6 +40,8 @@ describe("createSQSClient", () => {
       AWS_REGION: "",
     };
 
-    await expect(createSQSClient()).rejects.toThrow("error in createSQSClient");
+    await expect(
+      new CreateSQSClientService().createSQSClient(),
+    ).rejects.toThrow("error in createSQSClient");
   });
 });
