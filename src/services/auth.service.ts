@@ -1,10 +1,11 @@
-import { AuthCredentials } from "../models/authCredentials.model";
+import { AuthCredentials } from "../entities/authCredentials.entity";
 import jwt from "jsonwebtoken";
 import { SQSService } from "./sqs.service";
-import { EmailPayload } from "../interfaces/emailPayload.interface";
+import { EmailPayload } from "../models/emailPayload.interface";
 import logger from "../configs/logger.config";
 import bcrypt from "bcrypt";
 import { AccountRegisteredEmailTemplate } from "../constants/email.templates";
+import { envVars } from "../configs/envVars.config";
 export class AuthService {
   async registerNewUser(
     newEmail: string,
@@ -67,7 +68,7 @@ export class AuthService {
             username: loginUsername,
             role: result.role,
           },
-          process.env.JWTSECRET as string,
+          envVars.JWTSECRET as string,
           {
             expiresIn: "1d",
           },
@@ -75,7 +76,7 @@ export class AuthService {
         logger.info("User just logged in");
         return {
           status: 200,
-          message: "You are loged in",
+          message: "You are logged in",
           token: token,
         };
       } else {

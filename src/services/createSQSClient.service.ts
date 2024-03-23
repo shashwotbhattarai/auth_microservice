@@ -1,20 +1,19 @@
 import { SQSClient } from "@aws-sdk/client-sqs";
-import dotenv from "dotenv";
 import logger from "../configs/logger.config";
-dotenv.config();
+import { envVars } from "../configs/envVars.config";
 
 export async function createSQSClient() {
   if (
-    process.env.AWS_ACCESS_KEY_ID &&
-    process.env.AWS_SECRET_ACCESS_KEY &&
-    process.env.AWS_REGION
+    envVars.AWS_ACCESS_KEY_ID &&
+    envVars.AWS_SECRET_ACCESS_KEY &&
+    envVars.AWS_REGION
   ) {
     const client = new SQSClient({
       credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: envVars.AWS_ACCESS_KEY_ID,
+        secretAccessKey: envVars.AWS_SECRET_ACCESS_KEY,
       },
-      region: process.env.AWS_REGION,
+      region: envVars.AWS_REGION,
     });
     logger.info("SQS Client created");
     return {

@@ -1,15 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const swaggerAutogen = require("swagger-autogen")();
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const dotenv = require("dotenv");
-dotenv.config();
+const envVars = "../config/envVars";
 
 const doc = {
   info: {
-    title: "My API",
-    description: "Description",
+    title: "Auth Microservice",
+    description: "A microservice for signup and login.",
   },
-  host: `localhost:${process.env.PORT}`,
+  host: `localhost:${envVars.PORT}`,
 };
 
 const outputFile = "./swagger-output.json";

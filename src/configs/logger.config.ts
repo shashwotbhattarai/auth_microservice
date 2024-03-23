@@ -1,10 +1,10 @@
 import { createLogger, format, transports } from "winston";
 import * as dotenv from "dotenv";
+import { envVars } from "./envVars.config";
 dotenv.config();
 
-const env = process.env.ENV;
+const env = envVars.ENV;
 
-// { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatParams = (info: any) => {
   const { timestamp, level, message, ...args } = info;

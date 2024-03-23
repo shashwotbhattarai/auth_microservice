@@ -1,6 +1,6 @@
-import { AuthService } from "../services/auth.service";
-import { AuthCredentials } from "../models/authCredentials.model";
-import { SQSService } from "../services/sqs.service";
+import { AuthService } from "./auth.service";
+import { AuthCredentials } from "../entities/authCredentials.entity";
+import { SQSService } from "./sqs.service";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mockingoose = require("mockingoose");
 import jwt from "jsonwebtoken";
@@ -15,8 +15,7 @@ describe("AuthService", () => {
       jest.clearAllMocks();
     });
 
-    test("if database call gets results in an error", async () => {
-      //mock all dependencies
+    test("if database call results in an error", async () => {
       mockingoose(AuthCredentials).toReturn(
         new Error("Database error"),
         "findOne",
@@ -33,7 +32,6 @@ describe("AuthService", () => {
     });
 
     test("if username doesnt exists in database, new user is created and annd email is sent", async () => {
-      //mock all dependencies
       mockingoose(AuthCredentials).toReturn(null, "findOne");
       jest.mock("../services/sqs.service", () => {
         return {
@@ -58,7 +56,6 @@ describe("AuthService", () => {
       expect(finalResult?.message).toBe("New user registered");
     });
     test("if username  exists in database, respond with 400 error", async () => {
-      //mock all dependencies
       mockingoose(AuthCredentials).toReturn({ id: 1 }, "findOne");
       const authService = new AuthService();
       const finalResult = await authService.registerNewUser(
@@ -72,7 +69,6 @@ describe("AuthService", () => {
       expect(finalResult?.message).toBe("username already exists");
     });
     test("if unexpected error oocurs", async () => {
-      //mock all dependencies
       mockingoose(AuthCredentials).toReturn(undefined, "findOne");
       const authService = new AuthService();
       const finalResult = await authService.registerNewUser(
@@ -91,7 +87,6 @@ describe("AuthService", () => {
       jest.clearAllMocks();
     });
     test("if database call gets results in an error", async () => {
-      //mock all dependencies
       mockingoose(AuthCredentials).toReturn(
         new Error("Database error"),
         "findOne",
@@ -130,7 +125,7 @@ describe("AuthService", () => {
         },
         "findOne",
       );
-      jest.spyOn(jwt, "sign");
+      jest.spyOn(jwt, "sign"); //why ios this here
       const authService = new AuthService();
       const finalResult = await authService.login("ram", "password1");
 
@@ -152,7 +147,7 @@ describe("AuthService", () => {
     });
     test("if database call gets results in an error", async () => {
       //mock all dependencies
-      mockingoose(AuthCredentials).toReturn(undefined, "findOne");
+      mockingoose(AuthCredentials).toReturn(undefined, "findOne"); /// use toreject // to throw
       try {
         const authService = new AuthService();
         await authService.login("ram", "password");
