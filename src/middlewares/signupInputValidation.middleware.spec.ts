@@ -1,6 +1,9 @@
-import { validateSignupMiddleware } from "./signupInputValidation.middleware";
+import ValidateSignupMiddleware from "./signupInputValidation.middleware";
 import express from "express";
 import supertest from "supertest";
+
+const validateSignupMiddleware = new ValidateSignupMiddleware()
+  .validateSignupMiddleware;
 
 // Mocking the dependencies
 jest.mock("../configs/logger.config", () => ({

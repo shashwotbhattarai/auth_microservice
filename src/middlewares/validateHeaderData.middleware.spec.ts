@@ -1,7 +1,10 @@
 import request from "supertest";
 import express from "express";
 import bodyParser from "body-parser";
-import validateHeaderDataMiddleware from "./validateHeaderData.middleware";
+import ValidateHeaderDataMiddleware from "./validateHeaderData.middleware";
+
+const validateHeaderDataMiddleware = new ValidateHeaderDataMiddleware()
+  .validateHeaderDataMiddleware;
 
 const app = express();
 app.use(bodyParser.json());
