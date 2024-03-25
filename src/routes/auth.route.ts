@@ -1,14 +1,21 @@
 import express, { Router } from "express";
-import { signupController } from "../controllers/signup.controller";
-import { loginController } from "../controllers/login.controller";
-import { healthController } from "../controllers/health.controller";
+import SignupController from "../controllers/signup.controller";
+import LoginController from "../controllers/login.controller";
+import HealthController from "../controllers/health.controller";
+import ValidateSignupMiddleware from "../middlewares/signupInputValidation.middleware";
+import ValidateHeaderMiddleWare from "../middlewares/validateHeaderData.middleware";
 
 const router: Router = express.Router();
 
-router.post("/signup", signupController);
+const checkHealth = new HealthController().checkHealth;
+const login = new LoginController().login;
+const signup = new SignupController().signup;
 
-router.post("/login", loginController);
+const validateHeader = new ValidateHeaderMiddleWare().validateHeaderData;
+const validateSignup = new ValidateSignupMiddleware().validateSignup;
 
-router.get("/health", healthController);
+router.post("/signup", validateHeader, validateSignup, signup);
+router.post("/login", validateHeader, login);
+router.get("/health", checkHealth);
 
 export default router;

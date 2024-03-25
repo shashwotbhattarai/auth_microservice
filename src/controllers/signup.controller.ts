@@ -1,25 +1,21 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
-import { validateSignupInput } from "../validators/signup.validate";
-import logger from "../configs/logger.config";
+import { ValidatedHeaderData } from "../models/validatedHeaderData.type";
 
-export const signupController = (req: Request, res: Response) => {
-	const { error } = validateSignupInput.validate(req.body);
+export default class LoginController {
+  public signup = (req: Request, res: Response): void => {
+    (async () => {
+      const userdata: ValidatedHeaderData =
+        req.headers as unknown as ValidatedHeaderData;
+      const authService = new AuthService();
+      const authServiceResponse = await authService.registerNewUser(
+        req.body.email,
+        userdata.username,
+        userdata.password,
+        req.body.role,
+      );
 
-	if (error) {
-		logger.error("Input validation error in signup controller", error);
-		return res.status(400).json({ error: error.details[0].message });
-	}
-
-	(async function callAuthService() {
-		const authService = new AuthService();
-		const authServiceResponse = await authService.registerNewUser(
-			req.body.email,
-			req.body.username,
-			req.body.password,
-			req.body.role
-		);
-
-		res.status(authServiceResponse.status).send(authServiceResponse.message);
-	})();
-};
+      res.status(authServiceResponse.status).send(authServiceResponse.message);
+    })();
+  };
+}
