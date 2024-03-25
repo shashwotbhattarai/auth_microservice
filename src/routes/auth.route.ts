@@ -7,24 +7,15 @@ import ValidateHeaderMiddleWare from "../middlewares/validateHeaderData.middlewa
 
 const router: Router = express.Router();
 
-const healthController = new HealthController().healthController;
-const loginController = new LoginController().loginController;
-const signupController = new SignupController().signupController;
+const checkHealth = new HealthController().checkHealth;
+const login = new LoginController().login;
+const signup = new SignupController().signup;
 
-const validateHeaderMiddleWare = new ValidateHeaderMiddleWare()
-  .validateHeaderDataMiddleware;
-const validateSignupMiddleware = new ValidateSignupMiddleware()
-  .validateSignupMiddleware;
+const validateHeader = new ValidateHeaderMiddleWare().validateHeaderData;
+const validateSignup = new ValidateSignupMiddleware().validateSignup;
 
-router.post(
-  "/signup",
-  validateHeaderMiddleWare,
-  validateSignupMiddleware,
-  signupController,
-);
-
-router.post("/login", validateHeaderMiddleWare, loginController);
-
-router.get("/health", healthController);
+router.post("/signup", validateHeader, validateSignup, signup);
+router.post("/login", validateHeader, login);
+router.get("/health", checkHealth);
 
 export default router;

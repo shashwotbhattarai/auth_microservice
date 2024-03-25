@@ -55,6 +55,7 @@ describe("AuthService", () => {
       expect(finalResult?.status).toBe(201);
       expect(finalResult?.message).toBe("New user registered");
     });
+
     test("if username  exists in database, respond with 400 error", async () => {
       mockingoose(AuthCredentials).toReturn({ id: 1 }, "findOne");
       const authService = new AuthService();
@@ -68,7 +69,8 @@ describe("AuthService", () => {
       expect(finalResult?.status).toBe(400);
       expect(finalResult?.message).toBe("username already exists");
     });
-    test("if unexpected error oocurs", async () => {
+
+    test("if unexpected error occurs", async () => {
       mockingoose(AuthCredentials).toReturn(undefined, "findOne");
       const authService = new AuthService();
       const finalResult = await authService.registerNewUser(
@@ -86,6 +88,7 @@ describe("AuthService", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
+
     test("if database call gets results in an error", async () => {
       mockingoose(AuthCredentials).toReturn(
         new Error("Database error"),
@@ -98,6 +101,7 @@ describe("AuthService", () => {
         expect(error).toEqual(new Error("Unknown error in login"));
       }
     });
+
     test("login in when valid username and password is passed", async () => {
       mockingoose(AuthCredentials).toReturn(
         {
@@ -125,7 +129,6 @@ describe("AuthService", () => {
         },
         "findOne",
       );
-      jest.spyOn(jwt, "sign"); //why ios this here
       const authService = new AuthService();
       const finalResult = await authService.login("ram", "password1");
 
@@ -145,9 +148,9 @@ describe("AuthService", () => {
         expect(error).toEqual(new Error("database error"));
       }
     });
+
     test("if database call gets results in an error", async () => {
-      //mock all dependencies
-      mockingoose(AuthCredentials).toReturn(undefined, "findOne"); /// use toreject // to throw
+      mockingoose(AuthCredentials).toReturn(undefined, "findOne");
       try {
         const authService = new AuthService();
         await authService.login("ram", "password");

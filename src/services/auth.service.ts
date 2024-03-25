@@ -1,18 +1,20 @@
 import { AuthCredentials } from "../entities/authCredentials.entity";
 import jwt from "jsonwebtoken";
 import { SQSService } from "./sqs.service";
-import { EmailPayload } from "../models/emailPayload.interface";
+import { EmailPayload } from "../models/emailPayload.type";
 import logger from "../configs/logger.config";
 import bcrypt from "bcrypt";
 import { AccountRegisteredEmailTemplate } from "../constants/email.templates";
 import { envVars } from "../configs/envVars.config";
+import { ServiceResponse } from "../models/serviceResponse.type";
+
 export class AuthService {
-  async registerNewUser(
+  public async registerNewUser(
     newEmail: string,
     newUsername: string,
     newPassword: string,
     newRole: string,
-  ) {
+  ): Promise<ServiceResponse> {
     try {
       const result = await AuthCredentials.findOne({ username: newUsername });
       if (result === null) {
@@ -23,11 +25,20 @@ export class AuthService {
           password: hashedPassword,
           role: newRole,
         });
-        await registerNewUser.save();
+        const newUser = await registerNewUser.save();
+
+        const userId = newUser.user_id;
+        await AuthCredentials.findOneAndUpdate(
+          { user_id: userId },
+          { createdBy: userId },
+        );
         const emailPayload: EmailPayload = {
           to: newEmail,
           subject: AccountRegisteredEmailTemplate.subject,
-          text: AccountRegisteredEmailTemplate.text,
+          text: AccountRegisteredEmailTemplate.text.replace(
+            "{{username}}",
+            newUsername,
+          ),
         };
 
         await new SQSService().sendMessageToQueue(emailPayload);
@@ -54,7 +65,10 @@ export class AuthService {
       };
     }
   }
-  async login(loginUsername: string, loginPassword: string) {
+  public async login(
+    loginUsername: string,
+    loginPassword: string,
+  ): Promise<ServiceResponse> {
     try {
       const result = await AuthCredentials.findOne({ username: loginUsername });
 

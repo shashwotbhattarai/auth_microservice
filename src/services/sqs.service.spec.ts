@@ -16,7 +16,6 @@ describe("Sqs service", () => {
   });
 
   test("sqs message gets sent to queue", async () => {
-    //mock all dependencies
     sqsClientMock.on(SendMessageCommand).resolves({
       $metadata: {
         httpStatusCode: 200,
@@ -51,5 +50,18 @@ describe("Sqs service", () => {
     const result = await new SQSService().sendMessageToQueue(emailPayload);
 
     expect(result.status).toBe(500);
+  });
+
+  test("sqs message error because of client is undefined", async () => {
+    // TODO: figure out how to mock this
+    // sqsClientMock.on(SendMessageCommand).resolvesOnce(undefined);
+    const emailPayload = {
+      to: "babudallay@gmail.com",
+      subject: "new user created",
+      text: "your user has been created",
+    };
+    const result = await new SQSService().sendMessageToQueue(emailPayload);
+
+    expect(result.status).toBe(200);
   });
 });

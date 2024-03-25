@@ -21,9 +21,8 @@ This microservice is designed to handle all authentication-related operations wi
 ### Prerequisites
 
 - Install node v18.19.0
-- Environment variables///name the variables here with proper casing
 
-### Installation
+### Installation / Running
 
 1. Clone the repository:
 
@@ -37,13 +36,7 @@ This microservice is designed to handle all authentication-related operations wi
    npm install
    ```
 
-3. Run the application:
-
-   ```bash
-   npm run start
-   ```
-
-4. Application will start on port specified in env variable:
+3. Add env variables:
 
    ```bash
    DATABASEURI=
@@ -58,6 +51,12 @@ This microservice is designed to handle all authentication-related operations wi
    PORT=
    ```
 
+4. Run the application:
+
+   ```bash
+   npm run start
+   ```
+
 5. To test apis:
 
    ```bash
@@ -70,19 +69,25 @@ This microservice is designed to handle all authentication-related operations wi
    Signup API:
 
    curl --location 'http://localhost:3001/auth/signup' \
-   --header 'username: hellowww' \
-   --header 'password: Password@1234' \
+   --header 'username: {{<USERNAME>}}' \
+   --header 'password: {{<PASSWORD>}}' \
    --header 'Content-Type: application/json' \
    --data-raw '{
-      "email": "babudallay@gmail.com",
-      "role": "candidate"}'
+      "email": "{{<EMAIL>}}",
+      "role": {{<"candidate">/<"recruiter">}}}'
 
 
    Login API:
 
    curl --location --request POST 'http://localhost:3001/auth/login' \
-   --header 'username: hello' \
-   --header 'password: Password@1234' \
+   --header 'username: {{<USERNAME>}}' \
+   --header 'password: {{<PASSWORD>}}' \
    --data ''
 
    ```
+
+### Test
+
+```bash
+   npm run test
+```

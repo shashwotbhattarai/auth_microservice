@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const swaggerAutogen = require("swagger-autogen")();
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const dotenv = require("dotenv");
 dotenv.config();
 

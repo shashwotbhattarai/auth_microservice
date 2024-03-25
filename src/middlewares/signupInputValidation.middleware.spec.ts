@@ -2,8 +2,7 @@ import ValidateSignupMiddleware from "./signupInputValidation.middleware";
 import express from "express";
 import supertest from "supertest";
 
-const validateSignupMiddleware = new ValidateSignupMiddleware()
-  .validateSignupMiddleware;
+const validateSignupMiddleware = new ValidateSignupMiddleware();
 
 jest.mock("../configs/logger.config", () => ({
   error: jest.fn(),
@@ -11,11 +10,11 @@ jest.mock("../configs/logger.config", () => ({
 
 const app = express();
 app.use(express.json());
-app.post("/signup", validateSignupMiddleware, (req, res) => {
+app.post("/signup", validateSignupMiddleware.validateSignup, (req, res) => {
   res.status(200).send("Passed validation");
 });
 
-describe("validateSignupMiddleware", () => {
+describe("validateSignup", () => {
   it("passes validation for correct signup data", async () => {
     const response = await supertest(app)
       .post("/signup")

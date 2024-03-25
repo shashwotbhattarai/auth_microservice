@@ -1,7 +1,5 @@
 import { createLogger, format, transports } from "winston";
-import * as dotenv from "dotenv";
 import { envVars } from "./envVars.config";
-dotenv.config();
 
 const env = envVars.ENV;
 
@@ -35,5 +33,9 @@ const logger = createLogger({
   format: Format,
   transports: transportArray,
 });
-
+/*
+By setting the log level to info, 
+the logger will capture and log messages that are categorized as info, warn, and error, 
+but it will ignore messages that are less severe, such as debug, verbose, and silly.
+*/
 export default logger;

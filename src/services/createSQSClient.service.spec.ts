@@ -1,7 +1,5 @@
-// Import the function to test
 import CreateSQSClientService from "../services/createSQSClient.service";
 
-// Mocking the logger and envVars dependencies
 jest.mock("../configs/logger.config", () => ({
   info: jest.fn(),
   error: jest.fn(),
@@ -16,7 +14,6 @@ jest.mock("../configs/envVars.config", () => ({
 }));
 
 describe("createSQSClient", () => {
-  // Test for successful client creation
   it("creates an SQS client successfully when environment variables are set", async () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require("../configs/envVars.config").envVars = {
@@ -26,12 +23,12 @@ describe("createSQSClient", () => {
     };
 
     const response = await new CreateSQSClientService().createSQSClient();
+
     expect(response.status).toBe(200);
     expect(response.message).toBe("SQSClient created");
-    expect(response.data).toBeDefined();
+    expect(response.client).toBeDefined();
   });
 
-  // Test for failure when environment variables are not set
   it("throws an error when environment variables are not set", async () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require("../configs/envVars.config").envVars = {

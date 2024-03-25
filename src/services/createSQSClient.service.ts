@@ -1,9 +1,10 @@
 import { SQSClient } from "@aws-sdk/client-sqs";
 import logger from "../configs/logger.config";
 import { envVars } from "../configs/envVars.config";
+import { ServiceResponse } from "../models/serviceResponse.type";
 
 export default class CreateSQSClientService {
-  async createSQSClient() {
+  public async createSQSClient(): Promise<ServiceResponse> {
     if (
       envVars.AWS_ACCESS_KEY_ID &&
       envVars.AWS_SECRET_ACCESS_KEY &&
@@ -20,7 +21,7 @@ export default class CreateSQSClientService {
       return {
         status: 200,
         message: "SQSClient created",
-        data: client,
+        client: client,
       };
     } else {
       logger.error("Unknown error in creating SQS client");

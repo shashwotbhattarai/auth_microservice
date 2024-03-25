@@ -1,18 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 
 export default class ValidateHeaderDataMiddleware {
-  validateHeaderDataMiddleware = (
+  public validateHeaderData = (
     req: Request,
     res: Response,
     next: NextFunction,
-  ) => {
+  ): void => {
     const username = req.headers.username;
     const password = req.headers.password;
 
     if (typeof username !== "string" || typeof password !== "string") {
-      return res.status(401).send({
-        message:
-          "Either Username or password is missing or the data type is not string",
+      res.status(401).send({
+        message: "Invalid credentials",
       });
     }
     next();

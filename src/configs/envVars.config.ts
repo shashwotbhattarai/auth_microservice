@@ -12,4 +12,5 @@ export const envVars = {
   Access_Control_Allow_Origin: process.env.Access_Control_Allow_Origin,
   ENV: process.env.ENV,
   PORT: process.env.PORT,
+  Access_Control_Allow_Origin_URL: process.env.Access_Control_Allow_Origin_URL,
 };

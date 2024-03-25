@@ -3,7 +3,7 @@ import { AuthService } from "../services/auth.service";
 import { ValidatedHeaderData } from "../models/validatedHeaderData.type";
 
 export default class LoginController {
-  loginController = (req: Request, res: Response) => {
+  public login = (req: Request, res: Response): void => {
     (async () => {
       const userdata: ValidatedHeaderData = req.headers as ValidatedHeaderData;
       try {
