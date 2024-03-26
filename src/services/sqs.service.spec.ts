@@ -7,6 +7,7 @@ jest.mock("generate-unique-id", () => {
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { mockClient } from "aws-sdk-client-mock";
 import { SQSService } from "./sqs.service";
+import CreateSQSClientService from "./createSQSClient.service";
 
 describe("Sqs service", () => {
   const sqsClientMock = mockClient(SQSClient);
@@ -53,8 +54,21 @@ describe("Sqs service", () => {
   });
 
   test("sqs message error because of client is undefined", async () => {
-    // TODO: figure out how to mock this
-    // sqsClientMock.on(SendMessageCommand).resolvesOnce(undefined);
+    jest.mock("./createSQSClient.service", () => {
+      return {
+        CreateSQSClientService: jest.fn().mockImplementation(() => ({
+          createSQSClient: jest.fn(),
+        })),
+      };
+    });
+    jest
+      .spyOn(CreateSQSClientService.prototype, "createSQSClient")
+      .mockResolvedValue({
+        status: 400,
+        message: "afbsf",
+        client: undefined,
+      });
+
     const emailPayload = {
       to: "babudallay@gmail.com",
       subject: "new user created",
@@ -62,6 +76,6 @@ describe("Sqs service", () => {
     };
     const result = await new SQSService().sendMessageToQueue(emailPayload);
 
-    expect(result.status).toBe(200);
+    expect(result.status).toBe(500);
   });
 });
