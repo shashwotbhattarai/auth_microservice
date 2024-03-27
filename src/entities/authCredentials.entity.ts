@@ -14,6 +14,7 @@ const authCredentialsSchema = new Schema(
     role: { type: String },
     createdBy: { type: String },
     updatedBy: { type: String },
+    securityCode: { type: String },
   },
   { timestamps: true },
 );

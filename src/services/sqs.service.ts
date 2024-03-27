@@ -16,7 +16,7 @@ export class SQSService {
       const client = createSQSClientResponse.client;
       const sqsQueueUrl = envVars.SQS_QUEUE_URL;
 
-      if (client == undefined) {
+      if (client === undefined) {
         logger.info("client is undefined");
         return {
           status: 500,

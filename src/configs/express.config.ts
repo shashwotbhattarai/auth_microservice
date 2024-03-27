@@ -1,11 +1,11 @@
-import express from "express";
+import express, { Express } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { envVars } from "./envVars.config";
 
-const app = express();
+const app: Express = express();
 app.disable("x-powered-by");
-const corsOptions = {
+const corsOptions: object = {
   origin: [envVars.Access_Control_Allow_Origin_URL as string],
 };
 app.use(cors(corsOptions));
