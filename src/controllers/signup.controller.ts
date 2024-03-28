@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
-import { ValidatedHeaderData } from "../models/validatedHeaderData.type";
+import { ValidatedHeaderWithUsernameAndPassword } from "../models/validatedHeaderData.type";
 
 export default class LoginController {
   public signup = (req: Request, res: Response): void => {
-    (async () => {
-      const userdata: ValidatedHeaderData =
-        req.headers as unknown as ValidatedHeaderData;
+    (async (): Promise<void> => {
+      const userdata: ValidatedHeaderWithUsernameAndPassword =
+        req.headers as ValidatedHeaderWithUsernameAndPassword;
       const authService = new AuthService();
       const authServiceResponse = await authService.registerNewUser(
         req.body.email,

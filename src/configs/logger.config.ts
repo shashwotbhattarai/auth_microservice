@@ -4,7 +4,7 @@ import { envVars } from "./envVars.config";
 const env = envVars.ENV;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const formatParams = (info: any) => {
+const formatParams = (info: any): string => {
   const { timestamp, level, message, ...args } = info;
   const ts = timestamp.slice(0, 19).replace("T", " ");
 

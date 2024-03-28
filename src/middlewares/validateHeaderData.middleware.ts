@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 export default class ValidateHeaderDataMiddleware {
-  public validateHeaderData = (
+  public validateHeaderForUsernameAndPassword = (
     req: Request,
     res: Response,
     next: NextFunction,
@@ -13,7 +13,41 @@ export default class ValidateHeaderDataMiddleware {
       res.status(401).send({
         message: "Invalid credentials",
       });
+    } else {
+      next();
     }
-    next();
+  };
+
+  public validateHeaderForUsername = (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): void => {
+    const username = req.headers.username;
+
+    if (typeof username !== "string" || username === undefined) {
+      res.status(401).send({
+        message: "Invalid credentials",
+      });
+    } else {
+      next();
+    }
+  };
+
+  public validateHeaderForUsernameAndSecurityCode = (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): void => {
+    const securityCode = req.headers.securitycode;
+    const username = req.headers.username;
+
+    if (typeof securityCode !== "string" || typeof username !== "string") {
+      res.status(401).send({
+        message: "Invalid credentials",
+      });
+    } else {
+      next();
+    }
   };
 }

@@ -3,5 +3,5 @@ export type ServiceResponse = {
   status: number;
   message: string;
   token?: string;
-  client?: SQSClient | undefined;
+  client?: SQSClient;
 };
