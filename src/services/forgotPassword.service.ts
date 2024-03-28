@@ -7,6 +7,8 @@ import { ServiceResponse } from "../models/serviceResponse.type";
 import { SQSService } from "./sqs.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const rn = require("random-number");
 
 export default class ForgotPasswordService {
   public async emailSecurityCode(username: string): Promise<ServiceResponse> {
@@ -19,8 +21,13 @@ export default class ForgotPasswordService {
           message: "User not found",
         };
       }
+      const options = {
+        min: 0,
+        max: 99999,
+        integer: true,
+      };
 
-      const randomNumber: number = Math.floor(Math.random() * 90000) + 10000;
+      const randomNumber: number = rn(options);
       const randomNumberString: string = randomNumber.toString();
 
       await AuthCredentials.findOneAndUpdate(

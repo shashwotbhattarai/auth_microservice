@@ -6,7 +6,7 @@ import {
 import ForgotPasswordService from "../services/forgotPassword.service";
 
 export default class ForgetPasswordController {
-  public async getSecurityCode(req: Request, res: Response): Promise<void> {
+  public getSecurityCode(req: Request, res: Response): void {
     (async (): Promise<void> => {
       const userdata: ValidatedHeaderWithUsernameAndPassword =
         req.headers as ValidatedHeaderWithUsernameAndPassword;
@@ -19,7 +19,7 @@ export default class ForgetPasswordController {
     })();
   }
 
-  public async verifySecurityCode(req: Request, res: Response): Promise<void> {
+  public verifySecurityCode(req: Request, res: Response): void {
     (async (): Promise<void> => {
       const userdata: ValidatedHeaderWithSecurityCode =
         req.headers as ValidatedHeaderWithSecurityCode;
@@ -35,7 +35,7 @@ export default class ForgetPasswordController {
     })();
   }
 
-  public async resetPassword(req: Request, res: Response): Promise<void> {
+  public resetPassword(req: Request, res: Response): void {
     (async (): Promise<void> => {
       const userdata: ValidatedHeaderWithUsernameAndPassword =
         req.headers as ValidatedHeaderWithUsernameAndPassword;

@@ -30,8 +30,9 @@ export default class InputValidationMiddleware {
         status: "error",
         message: error.details[0].message,
       });
+    } else {
+      next();
     }
-    next();
   };
 
   public validateResetPasswordData = (
@@ -57,7 +58,8 @@ export default class InputValidationMiddleware {
         status: "error",
         message: error.details[0].message,
       });
+    } else {
+      next();
     }
-    next();
   };
 }

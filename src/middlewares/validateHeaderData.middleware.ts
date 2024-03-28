@@ -13,8 +13,9 @@ export default class ValidateHeaderDataMiddleware {
       res.status(401).send({
         message: "Invalid credentials",
       });
+    } else {
+      next();
     }
-    next();
   };
 
   public validateHeaderForUsername = (
@@ -28,8 +29,9 @@ export default class ValidateHeaderDataMiddleware {
       res.status(401).send({
         message: "Invalid credentials",
       });
+    } else {
+      next();
     }
-    next();
   };
 
   public validateHeaderForUsernameAndSecurityCode = (
@@ -44,7 +46,8 @@ export default class ValidateHeaderDataMiddleware {
       res.status(401).send({
         message: "Invalid credentials",
       });
+    } else {
+      next();
     }
-    next();
   };
 }

@@ -1,6 +1,6 @@
 import Joi from "joi";
-import { passwordRegex } from "./regex";
+import { pwRegex } from "./regex";
 
 export const validateResetPasswordInput = Joi.object({
-  password: Joi.string().min(8).pattern(new RegExp(passwordRegex)).required(),
+  password: Joi.string().min(8).pattern(new RegExp(pwRegex)).required(),
 });
