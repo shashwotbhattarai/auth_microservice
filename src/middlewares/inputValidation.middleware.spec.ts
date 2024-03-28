@@ -37,6 +37,9 @@ describe("validateSignup", () => {
       .send({ email: "test@example", role: "recruiter" });
 
     expect(response.statusCode).toBe(400);
+    expect(response.text).toBe(
+      '{"status":"error","message":"\\"password\\" is not allowed to be empty"}',
+    );
   });
 });
 
@@ -64,5 +67,8 @@ describe("validateHeaderForUsername", () => {
       .set("password", "password123");
 
     expect(response.statusCode).toBe(400);
+    expect(response.text).toBe(
+      '{"status":"error","message":"\\"password\\" with value \\"password123\\" fails to match the required pattern: /(?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}/"}',
+    );
   });
 });

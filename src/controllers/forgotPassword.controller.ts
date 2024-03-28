@@ -5,7 +5,7 @@ import {
 } from "../models/validatedHeaderData.type";
 import ForgotPasswordService from "../services/forgotPassword.service";
 
-export default class ForgetPasswordController {
+export default class ForgotPasswordController {
   public getSecurityCode(req: Request, res: Response): void {
     (async (): Promise<void> => {
       const userdata: ValidatedHeaderWithUsernameAndPassword =

@@ -4,7 +4,7 @@ import LoginController from "../controllers/login.controller";
 import HealthController from "../controllers/health.controller";
 import InputValidationMiddleware from "../middlewares/inputValidation.middleware";
 import ValidateHeaderMiddleWare from "../middlewares/validateHeaderData.middleware";
-import ForgetPasswordController from "../controllers/ForgetPassword.controller";
+import ForgetPasswordController from "../controllers/forgotPassword.controller";
 import AuthGuardMiddleware from "../middlewares/authGuard.middleware";
 
 const validateHeaderForUsernameAndPassword = new ValidateHeaderMiddleWare()
