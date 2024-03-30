@@ -15,7 +15,7 @@ describe("AuthService", () => {
       jest.clearAllMocks();
     });
 
-    test("if database call results in an error", async () => {
+    it("if database call results in an error", async () => {
       mockingoose(AuthCredentials).toReturn(
         new Error("Database error"),
         "findOne",
@@ -31,7 +31,7 @@ describe("AuthService", () => {
       expect(finalResult?.status).toBe(500);
     });
 
-    test("if username doesnt exists in database, new user is created and annd email is sent", async () => {
+    it("if username doesnt exists in database, new user is created and annd email is sent", async () => {
       mockingoose(AuthCredentials).toReturn(null, "findOne");
       jest.mock("../services/sqs.service", () => {
         return {
@@ -56,7 +56,7 @@ describe("AuthService", () => {
       expect(finalResult?.message).toBe("New user registered");
     });
 
-    test("if username  exists in database, respond with 400 error", async () => {
+    it("if username  exists in database, respond with 400 error", async () => {
       mockingoose(AuthCredentials).toReturn({ id: 1 }, "findOne");
       const authService = new AuthService();
       const finalResult = await authService.registerNewUser(
@@ -70,7 +70,7 @@ describe("AuthService", () => {
       expect(finalResult?.message).toBe("username already exists");
     });
 
-    test("if unexpected error occurs", async () => {
+    it("if unexpected error occurs", async () => {
       mockingoose(AuthCredentials).toReturn(undefined, "findOne");
       const authService = new AuthService();
       const finalResult = await authService.registerNewUser(
@@ -89,7 +89,7 @@ describe("AuthService", () => {
       jest.clearAllMocks();
     });
 
-    test("if database call gets results in an error", async () => {
+    it("if database call gets results in an error", async () => {
       mockingoose(AuthCredentials).toReturn(
         new Error("Database error"),
         "findOne",
@@ -102,7 +102,7 @@ describe("AuthService", () => {
       }
     });
 
-    test("login in when valid username and password is passed", async () => {
+    it("login in when valid username and password is passed", async () => {
       mockingoose(AuthCredentials).toReturn(
         {
           username: "ram",
@@ -120,7 +120,7 @@ describe("AuthService", () => {
       expect(finalResult?.token).toBe("mocked-token");
     });
 
-    test("error when valid password is not passed", async () => {
+    it("error when valid password is not passed", async () => {
       mockingoose(AuthCredentials).toReturn(
         {
           username: "ram",
@@ -138,7 +138,7 @@ describe("AuthService", () => {
       );
     });
 
-    test("error when valid username is not passed", async () => {
+    it("error when valid username is not passed", async () => {
       mockingoose(AuthCredentials).toReturn(null, "findOne");
       jest.spyOn(jwt, "sign");
       try {
@@ -149,7 +149,7 @@ describe("AuthService", () => {
       }
     });
 
-    test("if database call gets results in an error", async () => {
+    it("if database call gets results in an error", async () => {
       mockingoose(AuthCredentials).toReturn(undefined, "findOne");
       try {
         const authService = new AuthService();
