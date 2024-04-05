@@ -7,6 +7,7 @@ const doc = {
   info: {
     title: "Auth Microservice",
     description: "A microservice for signup and login.",
+    version: "0.0.1",
   },
   host: `localhost:${process.env.PORT}`,
 };
