@@ -3,12 +3,13 @@ import { AuthService } from "../services/auth.service";
 import { ValidatedHeaderWithUsernameAndPassword } from "../models/validatedHeaderData.type";
 
 export default class LoginController {
+  private authService = new AuthService();
   public signup = (req: Request, res: Response): void => {
     (async (): Promise<void> => {
       const userdata: ValidatedHeaderWithUsernameAndPassword =
         req.headers as ValidatedHeaderWithUsernameAndPassword;
-      const authService = new AuthService();
-      const authServiceResponse = await authService.registerNewUser(
+
+      const authServiceResponse = await this.authService.registerNewUser(
         req.body.email,
         userdata.username,
         userdata.password,
