@@ -9,6 +9,8 @@ import { envVars } from "../configs/envVars.config";
 import { ServiceResponse } from "../models/serviceResponse.type";
 
 export class AuthService {
+  private sqsService = new SQSService();
+
   public async registerNewUser(
     newEmail: string,
     newUsername: string,
@@ -41,7 +43,7 @@ export class AuthService {
           ),
         };
 
-        await new SQSService().sendMessageToQueue(emailPayload);
+        await this.sqsService.sendMessageToQueue(emailPayload);
         logger.info("New user registered");
         return {
           status: 201,

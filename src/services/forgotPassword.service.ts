@@ -11,6 +11,8 @@ import jwt from "jsonwebtoken";
 const rn = require("random-number");
 
 export default class ForgotPasswordService {
+  private sqsService = new SQSService();
+
   public async emailSecurityCode(username: string): Promise<ServiceResponse> {
     try {
       const user = await AuthCredentials.findOne({ username: username });
@@ -49,7 +51,7 @@ export default class ForgotPasswordService {
         subject: ForgotPasswordEmailTemplate.subject,
         text: emailText,
       };
-      await new SQSService().sendMessageToQueue(emailPayload);
+      await this.sqsService.sendMessageToQueue(emailPayload);
       logger.info("Password Reset Code sent in Email");
 
       return {

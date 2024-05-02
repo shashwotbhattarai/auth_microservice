@@ -4,3 +4,4 @@ coverage
 .scannerwork
 dist
 swagger-output.json
+.DS_Store
