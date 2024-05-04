@@ -1,17 +1,16 @@
 import { envVars } from "../configs/envVars.config";
 import logger from "../configs/logger.config";
-import { ForgotPasswordEmailTemplate } from "../constants/email.templates";
+import { SendEmailStatusEnum } from "../constants/sendEmailStatus.enum";
 import { AuthCredentials } from "../entities/authCredentials.entity";
-import { EmailPayload } from "../models/emailPayload.type";
 import { ServiceResponse } from "../models/serviceResponse.type";
-import { SQSService } from "./sqs.service";
+import { EmailerService } from "./emailer.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const rn = require("random-number");
 
 export default class ForgotPasswordService {
-  private sqsService = new SQSService();
+  private emailService = new EmailerService();
 
   public async emailSecurityCode(username: string): Promise<ServiceResponse> {
     try {
@@ -38,20 +37,12 @@ export default class ForgotPasswordService {
         { updatedBy: user.user_id },
       );
 
-      let emailText: string = ForgotPasswordEmailTemplate.text.replace(
-        "{{username}}",
+      this.emailService.sendEmail(
+        user.email,
         username,
-      );
-      emailText = emailText.replace(
-        "{{passwordResetCode}}",
+        SendEmailStatusEnum.FORGOT_PASSWORD,
         randomNumberString,
       );
-      const emailPayload: EmailPayload = {
-        to: user.email,
-        subject: ForgotPasswordEmailTemplate.subject,
-        text: emailText,
-      };
-      await this.sqsService.sendMessageToQueue(emailPayload);
       logger.info("Password Reset Code sent in Email");
 
       return {

@@ -1,15 +1,16 @@
 import { AuthCredentials } from "../entities/authCredentials.entity";
 import jwt from "jsonwebtoken";
 import { SQSService } from "./sqs.service";
-import { EmailPayload } from "../models/emailPayload.type";
 import logger from "../configs/logger.config";
 import bcrypt from "bcrypt";
-import { AccountRegisteredEmailTemplate } from "../constants/email.templates";
 import { envVars } from "../configs/envVars.config";
 import { ServiceResponse } from "../models/serviceResponse.type";
+import { EmailerService } from "./emailer.service";
+import { SendEmailStatusEnum } from "../constants/sendEmailStatus.enum";
 
 export class AuthService {
   private sqsService = new SQSService();
+  private emailerService = new EmailerService();
 
   public async registerNewUser(
     newEmail: string,
@@ -34,16 +35,11 @@ export class AuthService {
           { user_id: userId },
           { createdBy: userId },
         );
-        const emailPayload: EmailPayload = {
-          to: newEmail,
-          subject: AccountRegisteredEmailTemplate.subject,
-          text: AccountRegisteredEmailTemplate.text.replace(
-            "{{username}}",
-            newUsername,
-          ),
-        };
+        const sendEmailStatus =
+          SendEmailStatusEnum.NEW_USER_REGISTERED_SUCCESSFULLY;
 
-        await this.sqsService.sendMessageToQueue(emailPayload);
+        this.emailerService.sendEmail(newEmail, newUsername, sendEmailStatus);
+
         logger.info("New user registered");
         return {
           status: 201,
