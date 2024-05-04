@@ -43,7 +43,7 @@ export class EmailerService {
         );
         break;
 
-      case SendEmailStatusEnum.FORGET_PASSWORD:
+      case SendEmailStatusEnum.FORGOT_PASSWORD:
         subject = ForgotPasswordEmailTemplate.subject;
         text = ForgotPasswordEmailTemplate.text.replace(
           "{{username}}",

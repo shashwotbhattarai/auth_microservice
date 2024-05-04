@@ -65,7 +65,7 @@ describe("EmailerService", () => {
       expect(response.status).toBe(200);
     });
 
-    it("should responde with status:200 when status is FORGET_PASSWORD and  message is sent to queue", async () => {
+    it("should responde with status:200 when status is FORGOT_PASSWORD and  message is sent to queue", async () => {
       const status = SendEmailStatusEnum.NEW_USER_REGISTERED_SUCCESSFULLY;
       const subject = "Test Subject";
       const text = "Test Body";
@@ -99,8 +99,8 @@ describe("EmailerService", () => {
       expect(response.status).toBe(200);
     });
 
-    it("should responde with status:500 when any error occures", async () => {
-      const status = SendEmailStatusEnum.FORGET_PASSWORD;
+    it("should throw an error:Error in sendEmail, when any error occures", async () => {
+      const status = SendEmailStatusEnum.FORGOT_PASSWORD;
       const subject = "Test Subject";
       const text = "Test Body";
       const email = "test@example.com";

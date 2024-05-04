@@ -40,7 +40,7 @@ export default class ForgotPasswordService {
       this.emailService.sendEmail(
         user.email,
         username,
-        SendEmailStatusEnum.FORGET_PASSWORD,
+        SendEmailStatusEnum.FORGOT_PASSWORD,
         randomNumberString,
       );
       logger.info("Password Reset Code sent in Email");
