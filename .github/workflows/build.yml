@@ -1,10 +1,12 @@
 name: Node.js Build
 
 on:
-  workflow_run:
-    workflows: ["Node.js Linting"]
-    types:
-      - completed
+    push:
+      branches:
+        - cicd
+    pull_request:
+      branches:
+        - cicd
 
 jobs:
   build:
