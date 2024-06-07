@@ -3,10 +3,10 @@ name: Node.js Linting
 on:
   push:
     branches:
-      - main
+      - cicd
   pull_request:
     branches:
-      - main
+      - cicd
 
 jobs:
   lint:
