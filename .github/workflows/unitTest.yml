@@ -1,6 +1,12 @@
 name: Node.js Unit Tests
 
 on:
+  push:
+    branches:
+      - cicd
+  pull_request:
+    branches:
+      - cicd
   workflow_run:
     workflows: ["Node.js Build"]
     types:

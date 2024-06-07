@@ -1,12 +1,12 @@
 name: Node.js Build
 
 on:
-    push:
-      branches:
-        - cicd
-    pull_request:
-      branches:
-        - cicd
+  push:
+    branches:
+      - cicd
+  pull_request:
+    branches:
+      - cicd
 
 jobs:
   build:
