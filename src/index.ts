@@ -8,7 +8,7 @@ import app from "./configs/express.config";
 
 const port = envVars.PORT;
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-console.log("sfsfsdfsfsfasfasdf")
+console.log("lint fuck up");
 
 connectToDatabase();
 app.use("/auth", authRoute);
