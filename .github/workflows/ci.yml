@@ -64,12 +64,6 @@ jobs:
             - name: Install dependencies
               run: npm install
       
-            - name: Download build results
-              uses: actions/download-artifact@v2
-              with:
-                name: build-results
-                path: ./build-results
-      
             - name: Run unit tests
               run: npm test
       
