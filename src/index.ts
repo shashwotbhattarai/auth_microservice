@@ -8,6 +8,7 @@ import app from "./configs/express.config";
 
 const port = envVars.PORT;
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+console.log("sfsf")
 
 connectToDatabase();
 app.use("/auth", authRoute);
