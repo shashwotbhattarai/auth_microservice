@@ -3,6 +3,5 @@ node_modules
 coverage
 .scannerwork
 dist
-swagger-output.json
 .DS_Store
 package-lock.json
