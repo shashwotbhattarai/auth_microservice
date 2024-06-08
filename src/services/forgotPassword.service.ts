@@ -75,8 +75,6 @@ export default class ForgotPasswordService {
         };
       }
 
-      logger.error("88888888888",envVars.JWTSECRET);
-
       const token = jwt.sign(
         {
           user_id: user.user_id,
@@ -88,7 +86,6 @@ export default class ForgotPasswordService {
           expiresIn: "1d",
         },
       );
-
 
       return {
         status: 200,

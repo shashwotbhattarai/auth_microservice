@@ -76,16 +76,9 @@ describe("ForgotPasswordService", () => {
   });
   describe("verifySecurityCode", () => {
     it("should verify the security code and return a token on success", async () => {
-      mockUser = {
-        user_id: "123",
-        username: "john.doe",
-        email: "john.doe@example.com",
-        role: "user",
-        securityCode: "12345"
-      };
-      // const mockUserWithSecurityCode = { ...mockUser, securityCode: "12345" };
+      const mockUserWithSecurityCode = { ...mockUser, securityCode: "12345" };
       mockingoose(AuthCredentials).toReturn(
-        mockUser,
+        mockUserWithSecurityCode,
         "findOne",
       );
       const signSpy = jest.spyOn(jwt, "sign");
@@ -95,8 +88,6 @@ describe("ForgotPasswordService", () => {
         "john.doe",
         "12345",
       );
-      // eslint-disable-next-line no-console
-      console.log("response*******",response);
 
       expect(response.status).toBe(200);
       expect(response.message).toContain("Please Enter New Password");
