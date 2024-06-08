@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { envVars } from "./envVars.config";
+// import { envVars } from "./envVars.config";
 
 const app: Express = express();
 // app.disable("x-powered-by");
