@@ -112,8 +112,8 @@ jobs:
                       username: ${{ secrets.DOCKER_USERNAME }}
                       password: ${{ secrets.DOCKER_PASSWORD }}
 
-                  - name: List build directory contents
-                    run: ls -la ./dist
+                  # - name: List build directory contents
+                  #   run: ls -la $GITHUB_WORKSPACE/
               
                   - name: Build and Push Docker image
                     uses: docker/build-push-action@v2
