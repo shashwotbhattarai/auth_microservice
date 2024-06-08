@@ -85,6 +85,8 @@ describe("ForgotPasswordService", () => {
         "john.doe",
         "12345",
       );
+      // eslint-disable-next-line no-console
+      console.log("response*******",response);
 
       expect(response.status).toBe(200);
       expect(response.message).toContain("Please Enter New Password");
