@@ -75,9 +75,16 @@ describe("ForgotPasswordService", () => {
   });
   describe("verifySecurityCode", () => {
     it("should verify the security code and return a token on success", async () => {
-      const mockUserWithSecurityCode = { ...mockUser, securityCode: "12345" };
+      mockUser = {
+        user_id: "123",
+        username: "john.doe",
+        email: "john.doe@example.com",
+        role: "user",
+        securityCode: "12345"
+      };
+      // const mockUserWithSecurityCode = { ...mockUser, securityCode: "12345" };
       mockingoose(AuthCredentials).toReturn(
-        mockUserWithSecurityCode,
+        mockUser,
         "findOne",
       );
 

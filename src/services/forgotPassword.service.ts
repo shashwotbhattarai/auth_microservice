@@ -86,6 +86,7 @@ export default class ForgotPasswordService {
           expiresIn: "1d",
         },
       );
+      
 
       return {
         status: 200,
