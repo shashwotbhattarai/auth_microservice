@@ -5,9 +5,6 @@ COPY package*.json ./
 
 RUN npm install --ignore-scripts
 
-RUN addgroup --system nonroot && adduser --system --group nonroot
-USER nonroot
-
 COPY ./src /usr/src/app/src
 RUN npm run build
 
