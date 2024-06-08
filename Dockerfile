@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --ignore-scripts
+RUN npm install
 
 COPY ./src /usr/src/app/src
 RUN npm run build

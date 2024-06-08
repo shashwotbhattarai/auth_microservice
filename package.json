@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "swagger": "node ./swagger.js",
-    "build": "tsc && node ./swagger.js",
+    "build": "tsc",
     "prettier": "npx prettier . --write",
     "prepare": "husky",
     "check-for-unused-dependencies": "npx depcheck",
