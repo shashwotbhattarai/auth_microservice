@@ -94,6 +94,11 @@ jobs:
 
   build-and-push:
     runs-on: ubuntu-latest
+    needs:
+      - lint
+      - build
+      - test
+      - sonarcloud
     steps:
                   - name: Check Out Repo
                     uses: actions/checkout@v2
