@@ -86,7 +86,7 @@ describe("ForgotPasswordService", () => {
         "12345",
       );
 
-      expect(response.status).toEqual(200);
+      expect(response.status).toBe(200);
       expect(response.message).toContain("Please Enter New Password");
       expect(response.token).toBeDefined();
     });
