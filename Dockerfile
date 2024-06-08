@@ -8,8 +8,8 @@ RUN npm install --ignore-scripts
 RUN addgroup --system nonroot && adduser --system --group nonroot
 USER nonroot
 
-COPY ./dist /usr/src/app/dist
-COPY ./swagger-output.json /usr/src/app/swagger-output.json
+COPY ./src /usr/src/app/src
+RUN npm run build
 
 EXPOSE 3001
 
