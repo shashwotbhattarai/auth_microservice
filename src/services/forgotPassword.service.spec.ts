@@ -1,5 +1,6 @@
 import ForgotPasswordService from "./forgotPassword.service";
 import { AuthCredentials } from "../entities/authCredentials.entity";
+import jwt from "jsonwebtoken";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mockingoose = require("mockingoose");
@@ -87,6 +88,8 @@ describe("ForgotPasswordService", () => {
         mockUser,
         "findOne",
       );
+      const signSpy = jest.spyOn(jwt, "sign");
+      signSpy.mockImplementation(() => "mocked-token");
 
       const response = await forgotPasswordService.verifySecurityCode(
         "john.doe",
