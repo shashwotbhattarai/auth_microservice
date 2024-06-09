@@ -6,6 +6,7 @@ import logger from "./configs/logger.config";
 import { envVars } from "./configs/envVars.config";
 import app from "./configs/express.config";
 
+console.log("jsvfjgsdj,fgsdaj,f");
 const port = envVars.PORT;
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
