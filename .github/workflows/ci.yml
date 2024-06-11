@@ -133,7 +133,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: shashwotbhattarai/auth_microservice # Replace with your Docker Hub username and repository
+          tags: shashwotbhattarai/auth_microservice 
 
       - name: Verify Pushed Image
-        run: docker pull shashwotbhattarai/auth_microservice # Replace with your Docker Hub username and repository
+        run: docker pull shashwotbhattarai/auth_microservice 
