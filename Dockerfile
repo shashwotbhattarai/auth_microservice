@@ -10,4 +10,4 @@ COPY ./swagger-output.json /usr/src/app/swagger-output.json
 
 EXPOSE 3001
 
-CMD [ "npm","run", "start" ]
+CMD [ "node", "./dist/index.js" ]
