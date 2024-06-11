@@ -5,10 +5,8 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY ./src /usr/src/app
+COPY ./dist /usr/src/app/dist
 COPY ./swagger-output.json /usr/src/app/swagger-output.json
-
-RUN npm run build
 
 EXPOSE 3001
 

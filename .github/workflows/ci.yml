@@ -9,99 +9,117 @@ on:
       - cicd
 
 jobs:
-  # lint:
-  #   runs-on: ubuntu-latest
+  lint:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
 
-  #     - name: Install dependencies
-  #       run: npm install
+      - name: Install dependencies
+        run: npm install
 
-  #     - name: Run ESLint
-  #       run: npm run lint
+      - name: Run ESLint
+        run: npm run lint
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - lint
+  build:
+    runs-on: ubuntu-latest
+    needs:
+      - lint
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
 
-  #     - name: Install dependencies
-  #       run: npm install
+      - name: Install dependencies
+        run: npm install
 
-  #     - name: Build project
-  #       run: npm run build
+      - name: Build project
+        run: npm run build
 
-  # test:
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - lint
-  #     - build
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: ./dist
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+  test:
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - build
 
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Install dependencies
-  #       run: npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
 
-  #     - name: Run unit tests
-  #       run: npm test
+      - name: Install dependencies
+        run: npm install
 
-  # sonarcloud:
-  #   name: SonarCloud
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - lint
-  #     - build
-  #     - test
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-  #     - name: SonarCloud Scan
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifacts
+          path: ./dist
 
-  #     - name: SonarQube Quality Gate check
-  #       id: sonarqube-quality-gate-check
-  #       uses: sonarsource/sonarqube-quality-gate-action@master
-  #       env:
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  #         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
+      - name: Run unit tests
+        run: npm test
+
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - build
+      - test
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
 
   docker-image-build-and-push-to-dockerhub:
     runs-on: ubuntu-latest
-    # needs:
-    #   - lint
-    #   - build
-    #   - test
-    #   - sonarcloud
+    needs:
+      - lint
+      - build
+      - test
+      - sonarcloud
     steps:
       - name: Check Out Repo
         uses: actions/checkout@v2
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifacts
+          path: ./dist
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -119,4 +137,3 @@ jobs:
 
       - name: Verify Pushed Image
         run: docker pull shashwotbhattarai/auth_microservice # Replace with your Docker Hub username and repository
-
