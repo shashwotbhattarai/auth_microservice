@@ -8,6 +8,6 @@ RUN npm install
 COPY ./dist /usr/src/app/dist
 COPY ./swagger-output.json /usr/src/app/swagger-output.json
 
-EXPOSE 3001
+EXPOSE 8080
 
 CMD [ "node", "./dist/index.js" ]
