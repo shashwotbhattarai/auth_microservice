@@ -4,7 +4,7 @@ import logger from "../configs/logger.config";
 export default class HealthController {
   public checkHealth = (req: Request, res: Response): void => {
     (async (): Promise<void> => {
-      logger.info("Auth microservice is alive, wabalabadubdub");
+      logger.info("Auth microservice is alive, wabalabadubdub again");
       res.status(200).json({ message: "Auth microservice is alive" });
     })();
   };
