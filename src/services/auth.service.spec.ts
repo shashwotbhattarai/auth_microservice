@@ -27,6 +27,7 @@ describe("AuthService", () => {
         "password123",
         "user",
       );
+      
 
       expect(finalResult?.status).toBe(200);
     });
