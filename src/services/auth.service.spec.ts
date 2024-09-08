@@ -28,7 +28,7 @@ describe("AuthService", () => {
         "user",
       );
 
-      expect(finalResult?.status).toBe(500);
+      expect(finalResult?.status).toBe(200);
     });
 
     it("if username doesnt exists in database, new user is created and annd email is sent", async () => {
